@@ -112,29 +112,85 @@ def display_smart_markdown(content):
     else:
         st.markdown(content)
 
-# --- Barre Latérale ---
+def search_images(base_path, extensions=['.png', '.jpg', '.jpeg']):
+    """Recherche récursivement des images dans un dossier."""
+    images = []
+    if not os.path.exists(base_path):
+        return images
+    for root, dirs, files in os.walk(base_path):
+        for file in files:
+            if any(file.lower().endswith(ext) for ext in extensions):
+                images.append(os.path.join(root, file))
+    return images
+
+# --- Barre Latérale avec Navigation Mutuellement Exclusive ---
 st.sidebar.title("Electrochemistry Simulation")
+
+# Callbacks pour gérer la sélection unique
+def on_change_gen():
+    st.session_state.nav_cv = None
+    st.session_state.nav_plating = None
+
+def on_change_cv():
+    st.session_state.nav_gen = None
+    st.session_state.nav_plating = None
+
+def on_change_plating():
+    st.session_state.nav_gen = None
+    st.session_state.nav_cv = None
+
+# Initialisation des états si nécessaire (pour le premier chargement)
+if 'nav_gen' not in st.session_state and 'nav_cv' not in st.session_state and 'nav_plating' not in st.session_state:
+    st.session_state.nav_gen = "Accueil"
+    st.session_state.nav_cv = None
+    st.session_state.nav_plating = None
 
 # Section Accueil
 st.sidebar.subheader("Général")
-main_nav = st.sidebar.radio("Navigation principale", ["Accueil"])
+main_nav = st.sidebar.radio(
+    "Navigation principale", 
+    ["Accueil"], 
+    key="nav_gen", 
+    on_change=on_change_gen,
+    label_visibility="collapsed"
+)
 
 # Section Cyclic Voltammetry
 st.sidebar.markdown("---")
 st.sidebar.subheader("Cyclic Voltammetry (CV)")
-cv_nav = st.sidebar.selectbox("Modules CV", 
+cv_nav = st.sidebar.radio(
+    "Modules CV", 
     ["Introduction", "Comparaison des modèles", "Python (Firedrake)", "OpenFOAM", "Conclusion", "Équations clés", "Lexique", "Un peu d'histoire"],
-    index=None, placeholder="Sélectionnez un module...")
+    key="nav_cv",
+    index=None,
+    on_change=on_change_cv,
+    label_visibility="collapsed"
+)
 
 # Section Electroplating
 st.sidebar.markdown("---")
 st.sidebar.subheader("Electroplating")
-plating_nav = st.sidebar.selectbox("Modules Plating", 
+plating_nav = st.sidebar.radio(
+    "Modules Plating", 
     ["Introduction", "Python (Antigravity)", "Conclusion", "Équations clés", "Lexique", "Un peu d'histoire"],
-    index=None, placeholder="Sélectionnez un module...")
+    key="nav_plating",
+    index=None,
+    on_change=on_change_plating,
+    label_visibility="collapsed"
+)
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version 1.0.0**")
+st.sidebar.markdown("""
+**Version 1.0.0**
+Dec 2025
+*EQU Research*
+
+**Nouveautés :**
+- Comparaison FEM vs FVM
+- Simulation Galvanostatique
+- Cartes d'épaisseur 3D
+- Documentation historique
+""")
 
 # --- Logique de Navigation ---
 if main_nav == "Accueil" and cv_nav is None and plating_nav is None:
@@ -163,20 +219,36 @@ elif cv_nav:
     elif cv_nav == "Comparaison des modèles":
         display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "intro/comparaison_cv.md")))
     elif cv_nav == "Python (Firedrake)":
-        tab1, tab2 = st.tabs(["Physique & Résultats", "Code Source"])
-        with tab1:
+        tab_phys, tab_code, tab_gif, tab_png = st.tabs(["Physique", "Code", "Exemples GIF", "Exemples PNG"])
+        with tab_phys:
             display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "physics/cv_firedrake.md")))
+        with tab_code:
+            display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/cv_firedrake_code.md")))
+        with tab_gif:
+            st.info("Visualisation dynamique (Gifs) - À venir")
+            # Logique de chargement des GIFs à implémenter ici
+            gifs = search_images(os.path.join(ASSETS_PATH, "cv/gif"), ['.gif'])
+            if gifs:
+                for gif in gifs:
+                    st.image(gif, caption=os.path.basename(gif), use_container_width=True)
+            else:
+                st.warning("Aucune animation GIF disponible pour le moment.")
+        with tab_png:
+            st.subheader("Résultats Graphiques")
             res_img = os.path.join(ASSETS_PATH, "cv/png/cv_result_example.png")
             if os.path.exists(res_img):
-                st.image(res_img, caption="Exemple de Voltammogramme (Firedrake)", use_container_width=True)
-        with tab2:
-            display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/cv_firedrake_code.md")))
+                st.image(res_img, caption="Voltammogramme Firedrake", use_container_width=True)
+            
     elif cv_nav == "OpenFOAM":
-        tab1, tab2 = st.tabs(["Physique & Résultats", "Configuration"])
-        with tab1:
+        # Pour OpenFOAM, on garde la structure adaptée, mais on peut aussi l'étendre si on a des images
+        tab_phys, tab_code, tab_ex = st.tabs(["Physique", "Configuration", "Résultats"])
+        with tab_phys:
             display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "physics/cv_openfoam.md")))
-        with tab2:
+        with tab_code:
             display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/cv_openfoam_code.md")))
+        with tab_ex:
+            st.info("Résultats OpenFOAM - À venir")
+
     elif cv_nav == "Conclusion":
         display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "conclusion/cv_conclusion.md")))
     elif cv_nav == "Équations clés":
@@ -191,14 +263,25 @@ elif plating_nav:
     if plating_nav == "Introduction":
         display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "intro/intro_plating.md")))
     elif plating_nav == "Python (Antigravity)":
-        tab1, tab2 = st.tabs(["Physique & Résultats", "Code Source"])
-        with tab1:
+        tab_phys, tab_code, tab_gif, tab_png = st.tabs(["Physique", "Code", "Exemples GIF", "Exemples PNG"])
+        with tab_phys:
             display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "physics/plating_antigravity.md")))
+        with tab_code:
+            display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/plating_antigravity_code.md")))
+        with tab_gif:
+             st.info("Visualisation dynamique (Gifs) - À venir")
+             gifs = search_images(os.path.join(ASSETS_PATH, "plating/results"), ['.gif']) # Check in results too
+             if gifs:
+                for gif in gifs:
+                    st.image(gif, caption=os.path.basename(gif), use_container_width=True)
+             else:
+                st.warning("Aucune animation GIF disponible pour le moment.")
+        with tab_png:
+            st.subheader("Cartes d'épaisseur")
             res_img = os.path.join(ASSETS_PATH, "plating/results/plating_result_example.png")
             if os.path.exists(res_img):
-                st.image(res_img, caption="Distribution d'épaisseur du dépôt (Antigravity)", use_container_width=True)
-        with tab2:
-            display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/plating_antigravity_code.md")))
+                st.image(res_img, caption="Distribution d'épaisseur (Antigravity)", use_container_width=True)
+
     elif plating_nav == "Conclusion":
         display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "conclusion/plating_conclusion.md")))
     elif plating_nav == "Équations clés":
