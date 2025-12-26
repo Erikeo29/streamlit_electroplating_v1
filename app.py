@@ -88,12 +88,12 @@ TRANSLATIONS = {
         "cv_header": "Voltamétrie Cyclique (CV)",
         "cv_modules": [
             "Introduction", "Comparaison des modèles", "Python (Firedrake)", 
-            "OpenFOAM", "Conclusion", "Équations clés", "Lexique", "Un peu d'histoire"
+            "OpenFOAM", "Conclusion", "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"
         ],
         "plating_header": "Électrodéposition",
         "plating_modules": [
             "Introduction", "Python (Antigravity)", "Conclusion", 
-            "Équations clés", "Lexique", "Un peu d'histoire"
+            "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"
         ],
         "version_info": """**Version 1.0.1**\nDec 2025\n*EQU*\n\n**Nouveautés :**\n- Documentation code enrichie (imports, détails)\n- Support bilingue FR/EN\n\n**Précédemment (1.0.0) :**\n- Comparaison FEM vs FVM\n- Simulation Galvanostatique""",
         "tabs_cv_python": ["Physique", "Code", "Exemples GIF", "Exemples PNG"],
@@ -117,12 +117,12 @@ TRANSLATIONS = {
         "cv_header": "Cyclic Voltammetry (CV)",
         "cv_modules": [
             "Introduction", "Technical Comparison", "Python (Firedrake)", 
-            "OpenFOAM", "Conclusion", "Key Equations", "Glossary", "A Bit of History"
+            "OpenFOAM", "Conclusion", "Key Equations", "Glossary", "A Bit of History", "Bibliography"
         ],
         "plating_header": "Electroplating",
         "plating_modules": [
             "Introduction", "Python (Antigravity)", "Conclusion", 
-            "Key Equations", "Glossary", "A Bit of History"
+            "Key Equations", "Glossary", "A Bit of History", "Bibliography"
         ],
         "version_info": """**Version 1.0.1**\nDec 2025\n*EQU*\n\n**New Features:**\n- Enriched code documentation\n- Bilingual support FR/EN\n\n**Previously (1.0.0):**\n- FEM vs FVM Comparison\n- Galvanostatic Simulation""",
         "tabs_cv_python": ["Physics", "Code", "GIF Examples", "PNG Examples"],
@@ -234,7 +234,7 @@ if 'nav_plating' not in st.session_state: st.session_state.nav_plating = None
 st.sidebar.subheader(t("gen_header"))
 main_nav = st.sidebar.radio(
     "Nav Gen", 
-    [t("gen_home")],
+    [t("gen_home")], 
     key="nav_gen", 
     on_change=on_change_gen,
     label_visibility="collapsed"
@@ -289,7 +289,7 @@ if main_nav == t("gen_home") and cv_nav is None and plating_nav is None:
         res_img = os.path.join(ASSETS_PATH, "cv/png/cv_result_example.png")
         if os.path.exists(res_img):
             st.image(res_img, use_container_width=True)
-        st.write(t("card_cv_text")),
+        st.write(t("card_cv_text"))
         
     with col2:
         st.success(t("card_plating_title"))
@@ -351,10 +351,13 @@ elif cv_nav:
         display_smart_markdown(load_file_content("equations/cv_equations.md"))
     # 6: Lexique
     elif idx == 6:
-        display_smart_markdown(load_file_content("lexique/cv_lexique.md")),
+        display_smart_markdown(load_file_content("lexique/cv_lexique.md"))
     # 7: Histoire
     elif idx == 7:
-        display_smart_markdown(load_file_content("histoire/cv_histoire.md")),
+        display_smart_markdown(load_file_content("histoire/cv_histoire.md"))
+    # 8: Bibliographie
+    elif idx == 8:
+        display_smart_markdown(load_file_content("biblio/cv_biblio.md"))
 
 # PLATING PAGES
 elif plating_nav:
@@ -400,3 +403,6 @@ elif plating_nav:
     # 5: Histoire
     elif idx == 5:
         display_smart_markdown(load_file_content("histoire/plating_histoire.md"))
+    # 6: Bibliographie
+    elif idx == 6:
+        display_smart_markdown(load_file_content("biblio/plating_biblio.md"))
