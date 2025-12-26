@@ -70,7 +70,7 @@ h1, h2, h3 {
 <!-- Bouton retour en haut -->
 <a href="#top" class="back-to-top" title="Retour en haut">&#8679;</a>
 <div id="top"></div>
-""")
+"""
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # --- Chemins ---
