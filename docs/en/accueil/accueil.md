@@ -1,23 +1,18 @@
-# Welcome to the Electrochemical Simulation Platform
+# Welcome to the Electroplating Simulation Platform
 
-This interactive application brings together advanced modeling tools for studying complex electrochemical phenomena. It is designed as an academic and technical reference for numerical simulation.
+This interactive application gathers advanced modeling tools for the study of electroplating. It is designed as an academic and technical reference for numerical simulation.
 
 ## Platform Objectives
 - **Visualize** concentration gradients and potential distributions.
-- **Compare** different numerical approaches (Finite Element via Python/Firedrake vs Finite Volume via OpenFOAM).
-- **Analyze** the impact of physical parameters on experimental results (Voltammograms, Deposition Thickness).
+- **Analyze** the impact of physical parameters on deposition thickness.
+- **Optimize** deposition uniformity.
 
 ---
 
-## 1. Cyclic Voltammetry (CV)
-CV is a powerful electroanalytical technique. Here we model unsteady mass transport coupled with a reversible redox reaction.
-- **Python (Firedrake)**: Uses the Finite Element Method (FEM) for high spatial precision.
-- **OpenFOAM**: Fluid mechanics-oriented approach for complex geometries.
-
-## 2. Electroplating
-Simulation of Nickel electrolytic deposition on specific geometries (3-pad).
-- **Galvanostatic Mode**: Automatic search for anode potential to reach a target current density (DDC).
+## Electroplating
+Simulation of Nickel electrolytic deposition on specific electrode geometries (3-pad).
+- **Galvanostatic Mode**: Automatic search for anode potential to reach a target current density (CCD).
 - **Uniformity**: Analysis of thickness distribution and process optimization.
 
 ---
-*Developed for R&D Projects - Version 1.0.0*
+*Developed for R&D projects - Version 1.0.1*
