@@ -1,7 +1,7 @@
 import streamlit as st
 import base64
 import os
-import pandas as pd
+import streamlit.components.v1 as components
 
 # --- Configuration de la page ---
 st.set_page_config(page_title="Electroplating Simulation Platform", layout="wide")
@@ -70,7 +70,7 @@ h1, h2, h3 {
 <!-- Bouton retour en haut -->
 <a href="#top" class="back-to-top" title="Retour en haut">&#8679;</a>
 <div id="top"></div>
-"""
+"
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # --- Chemins ---
@@ -87,16 +87,19 @@ TRANSLATIONS = {
         "gen_home": "Accueil",
         "plating_header": "Électrodéposition",
         "plating_modules": [
-            "Introduction", "Python (Antigravity)", "Conclusion", 
+            "Introduction", "Python (Firedrake & PyVista)", "Conclusion", 
             "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"
         ],
-        "version_info": "**Version 1.0.1**\nDec 2025\n*EQU*\n\n**Nouveautés :**\n- Documentation code enrichie (imports, détails)\n- Support bilingue FR/EN\n\n**Précédemment (1.0.0) :**\n- Simulation Galvanostatique",
-        "tabs_plating": ["Physique", "Code", "Exemples GIF", "Exemples PNG"],
+        "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*\n\n**Nouveautés :**\n- Visualisation 3D Interactive (PyVista)\n- Intégration Firedrake\n\n**Précédemment (1.0.1) :**\n- Support bilingue FR/EN",
+        "tabs_plating": ["Physique", "Code", "Visualisation 3D", "Exemples GIF", "Exemples PNG"],
         "card_plating_title": "### Électrodéposition",
         "card_plating_text": "Simulation de dépôt électrolytique et distribution de courant secondaire.",
         "gif_coming_soon": "Visualisation dynamique (Gifs) - À venir",
         "no_gif": "Aucune animation GIF disponible pour le moment.",
-        "png_thickness": "Cartes d'épaisseur"
+        "png_thickness": "Cartes d'épaisseur",
+        "3d_interactive": "Visualisation 3D Interactive",
+        "3d_desc": "Visualisation interactive de l'épaisseur de dépôt (extrudée x1000). Utilisez la souris pour tourner, zoomer et explorer la géométrie.",
+        "3d_not_found": "Fichier de visualisation 3D introuvable."
     },
     "en": {
         "title": "Electroplating Simulation Platform",
@@ -105,16 +108,19 @@ TRANSLATIONS = {
         "gen_home": "Home",
         "plating_header": "Electroplating",
         "plating_modules": [
-            "Introduction", "Python (Antigravity)", "Conclusion", 
+            "Introduction", "Python (Firedrake & PyVista)", "Conclusion", 
             "Key Equations", "Glossary", "A Bit of History", "Bibliography"
         ],
-        "version_info": "**Version 1.0.1**\nDec 2025\n*EQU*\n\n**New Features:**\n- Enriched code documentation\n- Bilingual support FR/EN\n\n**Previously (1.0.0):**\n- Galvanostatic Simulation",
-        "tabs_plating": ["Physics", "Code", "GIF Examples", "PNG Examples"],
+        "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*\n\n**New Features:**\n- Interactive 3D Visualization (PyVista)\n- Firedrake Integration\n\n**Previously (1.0.1):**\n- Bilingual support FR/EN",
+        "tabs_plating": ["Physics", "Code", "3D Visualization", "GIF Examples", "PNG Examples"],
         "card_plating_title": "### Electroplating",
         "card_plating_text": "Simulation of electrolytic deposition and secondary current distribution.",
         "gif_coming_soon": "Dynamic Visualization (Gifs) - Coming Soon",
         "no_gif": "No GIF animation available at the moment.",
-        "png_thickness": "Thickness Maps"
+        "png_thickness": "Thickness Maps",
+        "3d_interactive": "Interactive 3D Visualization",
+        "3d_desc": "Interactive visualization of deposition thickness (extruded x1000). Use mouse to rotate, zoom, and explore geometry.",
+        "3d_not_found": "3D visualization file not found."
     }
 }
 
@@ -237,9 +243,12 @@ if main_nav == t("gen_home") and plating_nav is None:
     st.markdown(load_file_content("accueil/accueil.md"))
     
     st.success(t("card_plating_title"))
-    res_img = os.path.join(ASSETS_PATH, "plating/results/plating_result_example.png")
+    res_img = os.path.join(ASSETS_PATH, "plating/results/plating_result_refined.png")
     if os.path.exists(res_img):
         st.image(res_img, use_container_width=True)
+    elif os.path.exists(os.path.join(ASSETS_PATH, "plating/results/plating_result_example.png")):
+         st.image(os.path.join(ASSETS_PATH, "plating/results/plating_result_example.png"), use_container_width=True)
+    
     st.write(t("card_plating_text"))
 
 # PLATING PAGES
@@ -254,14 +263,34 @@ elif plating_nav:
     # 0: Intro
     if idx == 0:
         display_smart_markdown(load_file_content("intro/intro_plating.md"))
-    # 1: Python (Antigravity)
+    
+    # 1: Python (Firedrake & PyVista) - PREVIOUSLY "Antigravity"
     elif idx == 1:
         tabs = st.tabs(t("tabs_plating"))
+        
+        # Tab 1: Physics
         with tabs[0]:
-            display_smart_markdown(load_file_content("physics/plating_antigravity.md"))
+            display_smart_markdown(load_file_content("physics/plating_antigravity.md")
+            
+        # Tab 2: Code
         with tabs[1]:
-            display_smart_markdown(load_file_content("code/plating_antigravity_code.md"))
+            display_smart_markdown(load_file_content("code/plating_antigravity_code.md")
+            
+        # Tab 3: 3D Visualization (NEW)
         with tabs[2]:
+            st.subheader(t("3d_interactive"))
+            st.info(t("3d_desc"))
+            
+            html_file_path = os.path.join(ASSETS_PATH, "plating/results/3d_view.html")
+            if os.path.exists(html_file_path):
+                with open(html_file_path, 'r', encoding='utf-8') as f:
+                    html_content = f.read()
+                components.html(html_content, height=600, scrolling=False)
+            else:
+                st.warning(t("3d_not_found"))
+
+        # Tab 4: GIF
+        with tabs[3]:
              st.info(t("gif_coming_soon"))
              gifs = search_images(os.path.join(ASSETS_PATH, "plating/results"), ['.gif'])
              if gifs:
@@ -269,11 +298,19 @@ elif plating_nav:
                     st.image(gif, caption=os.path.basename(gif), use_container_width=True)
              else:
                 st.warning(t("no_gif"))
-        with tabs[3]:
+        
+        # Tab 5: PNG
+        with tabs[4]:
             st.subheader(t("png_thickness"))
-            res_img = os.path.join(ASSETS_PATH, "plating/results/plating_result_example.png")
-            if os.path.exists(res_img):
-                st.image(res_img, caption="Thickness Distribution (Antigravity)", use_container_width=True)
+            # Prioritize the refined result if available
+            res_img_refined = os.path.join(ASSETS_PATH, "plating/results/plating_result_refined.png")
+            res_img_example = os.path.join(ASSETS_PATH, "plating/results/plating_result_example.png")
+            
+            if os.path.exists(res_img_refined):
+                st.image(res_img_refined, caption="Thickness Distribution (Refined Mesh)", use_container_width=True)
+            elif os.path.exists(res_img_example):
+                st.image(res_img_example, caption="Thickness Distribution (Example)", use_container_width=True)
+
     # 2: Conclusion
     elif idx == 2:
         display_smart_markdown(load_file_content("conclusion/plating_conclusion.md"))
@@ -282,7 +319,7 @@ elif plating_nav:
         display_smart_markdown(load_file_content("equations/plating_equations.md"))
     # 4: Lexique
     elif idx == 4:
-        display_smart_markdown(load_file_content("lexique/plating_lexique.md"))
+        display_smart_markdown(load_file_content("lexique/plating_lexique.md")
     # 5: Histoire
     elif idx == 5:
         display_smart_markdown(load_file_content("histoire/plating_histoire.md"))
