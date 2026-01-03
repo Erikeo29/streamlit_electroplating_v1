@@ -270,11 +270,11 @@ elif plating_nav:
         
         # Tab 1: Physics
         with tabs[0]:
-            display_smart_markdown(load_file_content("physics/plating_antigravity.md")
+            display_smart_markdown(load_file_content("physics/plating_antigravity.md"))
             
         # Tab 2: Code
         with tabs[1]:
-            display_smart_markdown(load_file_content("code/plating_antigravity_code.md")
+            display_smart_markdown(load_file_content("code/plating_antigravity_code.md"))
             
         # Tab 3: 3D Visualization (NEW)
         with tabs[2]:
