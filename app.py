@@ -262,7 +262,7 @@ elif plating_nav:
 
     # 0: Intro
     if idx == 0:
-        display_smart_markdown(load_file_content("intro/intro_plating.md")))
+        display_smart_markdown(load_file_content("intro/intro_plating.md"))
     
     # 1: Python (Firedrake & PyVista) - PREVIOUSLY "Antigravity"
     elif idx == 1:
@@ -270,11 +270,11 @@ elif plating_nav:
         
         # Tab 1: Physics
         with tabs[0]:
-            display_smart_markdown(load_file_content("physics/plating_antigravity.md")))
+            display_smart_markdown(load_file_content("physics/plating_antigravity.md"))
             
         # Tab 2: Code
         with tabs[1]:
-            display_smart_markdown(load_file_content("code/plating_antigravity_code.md")))
+            display_smart_markdown(load_file_content("code/plating_antigravity_code.md"))
             
         # Tab 3: 3D Visualization (NEW)
         with tabs[2]:
@@ -313,16 +313,16 @@ elif plating_nav:
 
     # 2: Conclusion
     elif idx == 2:
-        display_smart_markdown(load_file_content("conclusion/plating_conclusion.md")))
+        display_smart_markdown(load_file_content("conclusion/plating_conclusion.md"))
     # 3: Equations
     elif idx == 3:
-        display_smart_markdown(load_file_content("equations/plating_equations.md")))
+        display_smart_markdown(load_file_content("equations/plating_equations.md"))
     # 4: Lexique
     elif idx == 4:
         display_smart_markdown(load_file_content("lexique/plating_lexique.md"))
     # 5: Histoire
     elif idx == 5:
-        display_smart_markdown(load_file_content("histoire/plating_histoire.md")))
+        display_smart_markdown(load_file_content("histoire/plating_histoire.md"))
     # 6: Bibliographie
     elif idx == 6:
-        display_smart_markdown(load_file_content("biblio/plating_biblio.md")))
+        display_smart_markdown(load_file_content("biblio/plating_biblio.md"))
