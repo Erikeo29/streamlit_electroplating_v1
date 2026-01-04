@@ -126,6 +126,9 @@ if new_lang != old_lang:
     modules_old = TRANSLATIONS[old_lang]["plating_modules"]
     modules_new = TRANSLATIONS[new_lang]["plating_modules"]
     
+    
+    st.session_state.lang = new_lang # Mise à jour immédiate pour que t() fonctionne
+
     if current_val and current_val in modules_old:
         idx = modules_old.index(current_val)
         st.session_state[key_nav_plating] = modules_new[idx]
@@ -134,7 +137,6 @@ if new_lang != old_lang:
         st.session_state[key_nav_gen] = t("gen_home")
         st.session_state[key_nav_plating] = None
     
-    st.session_state.lang = new_lang
     st.rerun()
 
 st.session_state.lang = new_lang
