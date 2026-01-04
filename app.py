@@ -216,9 +216,13 @@ if new_lang != old_lang:
         st.session_state.nav_plating = modules_pl_new[idx]
         
     st.session_state.lang = new_lang
+
+# --- Mapping Modules (FR/EN correspondence) ---\nmodules_pl = TRANSLATIONS["fr"]["plating_modules"]\nmodules_pl_en = TRANSLATIONS["en"]["plating_modules"]
     st.rerun()
 
 st.session_state.lang = new_lang
+
+# --- Mapping Modules (FR/EN correspondence) ---\nmodules_pl = TRANSLATIONS["fr"]["plating_modules"]\nmodules_pl_en = TRANSLATIONS["en"]["plating_modules"]
 
 st.sidebar.title(t("sidebar_title"))
 
@@ -262,9 +266,6 @@ plating_nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
 
-# --- Mapping Modules (FR/EN correspondence) ---
-modules_pl = TRANSLATIONS["fr"]["plating_modules"]
-modules_pl_en = TRANSLATIONS["en"]["plating_modules"]
 
 # --- Contenu Principal ---
 
