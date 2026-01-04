@@ -217,11 +217,15 @@ elif plating_nav:
             with tabs[1]: st.markdown(load_file_content(target[1]))
             with tabs[2]: # 3D
                 st.subheader(t("3d_interactive"))
-                st.info(t("3d_desc")),
+                st.info(t("3d_desc"))
                 html_path = os.path.join(ASSETS_PATH, "plating/results/3d_view.html")
                 if os.path.exists(html_path):
-                    with open(html_path,'r',encoding='utf-8') as f:
-                        components.html(f.read(), height=600, scrolling=False)
+                    try:
+                        with open(html_path, 'r', encoding='utf-8') as f:
+                            html_content = f.read()
+                        st.components.v1.html(html_content, height=600, scrolling=False)
+                    except Exception as e_html:
+                        st.error(f"Error loading 3D view: {e_html}")
                 else:
                     st.warning(t("3d_not_found"))
             with tabs[3]: st.info(t("gif_coming_soon"))
