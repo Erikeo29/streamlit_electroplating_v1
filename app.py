@@ -60,7 +60,7 @@ h1, h2, h3 { color: #004b87; }
 <a href="#top" class="nav-button back-to-top" title="Haut"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg></a>
 <a href="#bottom" class="nav-button scroll-to-bottom" title="Bas"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 20l8-8h-5V4h-6v8H4z"/></svg></a>
 <div id="top"></div>
-"
+"""
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # --- Chemins ---
@@ -170,7 +170,7 @@ def on_change_plating():
     st.session_state.nav_gen = None
 
 # Init states
-if 'nav_gen' not not in st.session_state and 'nav_plating' not in st.session_state:
+if 'nav_gen' not in st.session_state and 'nav_plating' not in st.session_state:
     st.session_state.nav_gen = t("gen_home")
 
 # --- Navigation GEN ---
