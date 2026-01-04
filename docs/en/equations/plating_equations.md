@@ -1,5 +1,3 @@
-# Key Equations: Electroplating
-
 Simulation of Nickel (Ni) electrodeposition uses a Secondary Current Distribution model.
 
 ## 1. Potential Distribution

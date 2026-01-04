@@ -1,5 +1,3 @@
-# Lexique : Électrodéposition
-
 - **Cathode** : Électrode où se produit la réduction (dépôt du métal).
 - **Anode** : Électrode où se produit l'oxydation.
 - **DDC (Densité De Courant)** : Courant par unité de surface [$A/m^2$ ou $A/dm^2$].

@@ -1,5 +1,3 @@
-# Introduction: Electroplating
-
 Electroplating is a process used to deposit a metal layer onto a conductive substrate via the electrochemical reduction of metal ions in solution.
 
 ## The Nickel System

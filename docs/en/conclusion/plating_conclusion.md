@@ -1,6 +1,4 @@
-# Conclusion: Electroplating
-
-The secondary current distribution approach implemented in Antigravity allows for robust estimation of Nickel deposition growth on complex geometries.
+The secondary current distribution approach implemented in Python allows for robust estimation of Nickel deposition growth on complex geometries.
 
 ## Summary
 - The galvanostatic search algorithm eliminates the need for manual anode potential tuning.

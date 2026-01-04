@@ -1,5 +1,3 @@
-# Glossary: Electroplating
-
 - **Cathode**: Electrode where reduction occurs (metal deposition).
 - **Anode**: Electrode where oxidation occurs.
 - **CD (Current Density)**: Current per unit area [$A/m^2$ or $A/dm^2$].
