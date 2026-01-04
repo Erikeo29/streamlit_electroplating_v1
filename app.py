@@ -104,7 +104,7 @@ def search_images(base_path, extensions=['.png', '.jpg', '.jpeg']):
 def display_smart_markdown(content):
     st.markdown(content)
 
-# --- Sidebar ---
+# --- Gestion de la Langue ---
 col_l1, col_l2 = st.sidebar.columns(2)
 old_lang = st.session_state.get('lang', 'fr')
 lang_selection = st.sidebar.radio("Lang", ["🇫🇷 FR", "🇬🇧 EN"], horizontal=True, label_visibility="collapsed", index=0 if old_lang == "fr" else 1)
@@ -114,47 +114,58 @@ new_lang = "fr" if "FR" in lang_selection else "en"
 modules_pl = TRANSLATIONS["fr"]["plating_modules"]
 modules_pl_en = TRANSLATIONS["en"]["plating_modules"]
 
+# Clés dynamiques pour les widgets
+key_nav_gen = f"nav_gen_{new_lang}"
+key_nav_plating = f"nav_plating_{new_lang}"
+
 if new_lang != old_lang:
+    # Récupérer état ancien
+    old_key_plating = f"nav_plating_{old_lang}"
+    current_val = st.session_state.get(old_key_plating)
+    
     modules_old = TRANSLATIONS[old_lang]["plating_modules"]
     modules_new = TRANSLATIONS[new_lang]["plating_modules"]
     
-    current = st.session_state.get('nav_plating')
-    if current and current in modules_old:
-        idx = modules_old.index(current)
-        st.session_state.nav_plating = modules_new[idx]
-        st.session_state.nav_gen = None
-        
+    if current_val and current_val in modules_old:
+        idx = modules_old.index(current_val)
+        st.session_state[key_nav_plating] = modules_new[idx]
+        st.session_state[key_nav_gen] = None
+    else:
+        st.session_state[key_nav_gen] = t("gen_home")
+        st.session_state[key_nav_plating] = None
+    
     st.session_state.lang = new_lang
     st.rerun()
 
 st.session_state.lang = new_lang
 st.sidebar.title(t("sidebar_title"))
 
-# Callbacks
+# --- Callbacks ---
 def on_change_gen():
-    st.session_state.nav_plating = None
+    st.session_state[key_nav_plating] = None
 
 def on_change_plating():
-    st.session_state.nav_gen = None
-
-# Init states
-if 'nav_gen' not in st.session_state and 'nav_plating' not in st.session_state:
-    st.session_state.nav_gen = t("gen_home")
+    st.session_state[key_nav_gen] = None
 
 # --- Navigation GEN ---
 st.sidebar.subheader(t("gen_header"))
 gen_options = [t("gen_home")]
+
+if key_nav_gen not in st.session_state and key_nav_plating not in st.session_state:
+    st.session_state[key_nav_gen] = t("gen_home")
+
 gen_args = {
     "label": "Nav Gen",
     "options": gen_options,
-    "key": "nav_gen",
+    "key": key_nav_gen,
     "on_change": on_change_gen,
     "label_visibility": "collapsed"
 }
-if st.session_state.get("nav_plating") is not None:
+
+if st.session_state.get(key_nav_plating) is not None:
     gen_args["index"] = None
-elif st.session_state.get("nav_gen") in gen_options:
-    gen_args["index"] = gen_options.index(st.session_state.nav_gen)
+elif st.session_state.get(key_nav_gen) in gen_options:
+    gen_args["index"] = gen_options.index(st.session_state[key_nav_gen])
 
 main_nav = st.sidebar.radio(**gen_args)
 
@@ -167,14 +178,15 @@ current_modules = modules_pl if new_lang == "fr" else modules_pl_en
 plating_args = {
     "label": "Nav Plating",
     "options": current_modules,
-    "key": "nav_plating",
+    "key": key_nav_plating,
     "on_change": on_change_plating,
     "label_visibility": "collapsed"
 }
-if st.session_state.get("nav_gen") is not None:
+
+if st.session_state.get(key_nav_gen) is not None:
     plating_args["index"] = None
-elif st.session_state.get("nav_plating") in current_modules:
-    plating_args["index"] = current_modules.index(st.session_state.nav_plating)
+elif st.session_state.get(key_nav_plating) in current_modules:
+    plating_args["index"] = current_modules.index(st.session_state[key_nav_plating])
 
 plating_nav = st.sidebar.radio(**plating_args)
 
@@ -207,7 +219,7 @@ elif plating_nav:
             with tabs[1]: st.markdown(load_file_content(target[1]))
             with tabs[2]: # 3D
                 st.subheader(t("3d_interactive"))
-                st.info(t("3d_desc"))
+                st.info(t("3d_desc")),
                 html_path = os.path.join(ASSETS_PATH, "plating/results/3d_view.html")
                 if os.path.exists(html_path):
                     with open(html_path,'r',encoding='utf-8') as f:
