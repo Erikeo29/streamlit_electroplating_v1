@@ -237,7 +237,7 @@ if 'nav_plating' not in st.session_state: st.session_state.nav_plating = None
 st.sidebar.subheader(t("gen_header"))
 main_nav = st.sidebar.radio(
     "Nav Gen", 
-    [t("gen_home")],
+    [t("gen_home")], 
     key="nav_gen", 
     on_change=on_change_gen,
     label_visibility="collapsed"
@@ -245,15 +245,20 @@ main_nav = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 st.sidebar.subheader(t("plating_header"))
+
+# Calcul de l'index pour maintenir la sélection visuelle
+plating_index = None
+if st.session_state.get("nav_plating") in modules_pl:
+    plating_index = modules_pl.index(st.session_state.nav_plating)
+
 plating_nav = st.sidebar.radio(
     "Nav Plating", 
-    t("plating_modules"),
+    modules_pl,
     key="nav_plating",
-    index=None,
+    index=plating_index,
     on_change=on_change_plating,
     label_visibility="collapsed"
 )
-
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
 
