@@ -164,8 +164,6 @@ gen_args = {
 
 if st.session_state.get(key_nav_plating) is not None:
     gen_args["index"] = None
-elif st.session_state.get(key_nav_gen) in gen_options:
-    gen_args["index"] = gen_options.index(st.session_state[key_nav_gen])
 
 main_nav = st.sidebar.radio(**gen_args)
 
@@ -185,8 +183,6 @@ plating_args = {
 
 if st.session_state.get(key_nav_gen) is not None:
     plating_args["index"] = None
-elif st.session_state.get(key_nav_plating) in current_modules:
-    plating_args["index"] = current_modules.index(st.session_state[key_nav_plating])
 
 plating_nav = st.sidebar.radio(**plating_args)
 
