@@ -33,29 +33,33 @@ header {visibility: hidden;}
     color: white;
 }
 
-/* Bouton retour en haut */
-.back-to-top {
+/* Boutons de navigation - SVG flèche blanche sur fond bleu */
+.nav-button {
     position: fixed;
-    bottom: 50%;
     right: 30px;
     z-index: 9999;
     background-color: #004b87;
-    color: white;
     border: none;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    font-size: 24px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    transition: all 0.2s ease;
 }
-.back-to-top:hover {
+.nav-button:hover {
     background-color: #003366;
     transform: scale(1.1);
+}
+.back-to-top {
+    bottom: calc(50% + 30px);
+}
+.scroll-to-bottom {
+    bottom: calc(50% - 30px);
 }
 
 /* Style scientifique (Latex-like) */
@@ -67,10 +71,20 @@ h1, h2, h3 {
 }
 </style>
 
-<!-- Bouton retour en haut -->
-<a href="#top" class="back-to-top" title="Retour en haut">&#8679;</a>
+<!-- Bouton retour en haut - SVG avec flèche vers le haut -->
+<a href="#top" class="nav-button back-to-top" title="Retour en haut / Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M12 4l-8 8h5v8h6v-8h5z"/>
+    </svg>
+</a>
+<!-- Bouton descendre en bas - SVG avec flèche vers le bas -->
+<a href="#bottom" class="nav-button scroll-to-bottom" title="Aller en bas / Go to bottom">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M12 20l8-8h-5V4h-6v8H4z"/>
+    </svg>
+</a>
 <div id="top"></div>
-"""
+"
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # --- Chemins ---
@@ -81,14 +95,14 @@ ASSETS_PATH = os.path.join(ROOT_DIR, "assets")
 # --- Dictionnaire de Traduction UI ---
 TRANSLATIONS = {
     "fr": {
-        "title": "Plateforme de Simulation d'Électrodéposition",
+        "title": "Plateforme de Simulation d\'Électrodéposition",
         "sidebar_title": "Simulation",
         "gen_header": "Général",
         "gen_home": "Accueil",
         "plating_header": "Électrodéposition",
         "plating_modules": [
             "Introduction", "Python (Firedrake & PyVista)", "Conclusion", 
-            "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"
+            "Équations clés", "Lexique", "Un peu d\'histoire", "Bibliographie"
         ],
         "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*\n\n**Nouveautés :**\n- Visualisation 3D Interactive (PyVista)\n- Intégration Firedrake\n\n**Précédemment (1.0.1) :**\n- Support bilingue FR/EN",
         "tabs_plating": ["Physique", "Code", "Visualisation 3D", "Exemples GIF", "Exemples PNG"],
@@ -96,9 +110,9 @@ TRANSLATIONS = {
         "card_plating_text": "Simulation de dépôt électrolytique et distribution de courant secondaire.",
         "gif_coming_soon": "Visualisation dynamique (Gifs) - À venir",
         "no_gif": "Aucune animation GIF disponible pour le moment.",
-        "png_thickness": "Cartes d'épaisseur",
+        "png_thickness": "Cartes d\'épaisseur",
         "3d_interactive": "Visualisation 3D Interactive",
-        "3d_desc": "Visualisation interactive de l'épaisseur de dépôt (extrudée x1000). Utilisez la souris pour tourner, zoomer et explorer la géométrie.",
+        "3d_desc": "Visualisation interactive de l\'épaisseur de dépôt (extrudée x1000). Utilisez la souris pour tourner, zoomer et explorer la géométrie.",
         "3d_not_found": "Fichier de visualisation 3D introuvable."
     },
     "en": {
@@ -180,19 +194,31 @@ def search_images(base_path, extensions=['.png', '.jpg', '.jpeg']):
 
 # --- Barre Latérale ---
 
-# Sélecteur de langue
+# Sélecteur de langue avec préservation navigation
+old_lang = st.session_state.get('lang', 'fr')
 col_l1, col_l2 = st.sidebar.columns(2)
 lang_selection = st.sidebar.radio(
     "Language",
     ["🇫🇷 FR", "🇬🇧 EN"],
     horizontal=True,
-    label_visibility="collapsed"
+    label_visibility="collapsed",
+    index=0 if old_lang == "fr" else 1
 )
+new_lang = "fr" if "FR" in lang_selection else "en"
 
-if "FR" in lang_selection:
-    st.session_state.lang = "fr"
-else:
-    st.session_state.lang = "en"
+# Si la langue change, convertir la sélection actuelle
+if new_lang != old_lang:
+    modules_pl_old = TRANSLATIONS[old_lang]["plating_modules"]
+    modules_pl_new = TRANSLATIONS[new_lang]["plating_modules"]
+    
+    if st.session_state.get('nav_plating') and st.session_state.nav_plating in modules_pl_old:
+        idx = modules_pl_old.index(st.session_state.nav_plating)
+        st.session_state.nav_plating = modules_pl_new[idx]
+        
+    st.session_state.lang = new_lang
+    st.rerun()
+
+st.session_state.lang = new_lang
 
 st.sidebar.title(t("sidebar_title"))
 
@@ -326,3 +352,6 @@ elif plating_nav:
     # 6: Bibliographie
     elif idx == 6:
         display_smart_markdown(load_file_content("biblio/plating_biblio.md"))
+
+# --- Ancre de fin de page pour bouton scroll-to-bottom ---
+st.markdown('<div id="bottom"></div>', unsafe_allow_html=True)
