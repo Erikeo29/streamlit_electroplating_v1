@@ -251,21 +251,21 @@ main_nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.subheader(t("plating_header"))
 
-# Calcul sécurisé de l'index pour st.radio
-current_selection = st.session_state.get("nav_plating")
-if current_selection in modules_pl:
-    plating_index = modules_pl.index(current_selection)
-else:
-    plating_index = None  # Laisser None si rien n'est sélectionné (ex: Accueil actif)
+# Construction dynamique des arguments pour éviter le conflit index/session_state
+plating_args = {
+    "label": "Nav Plating",
+    "options": modules_pl,
+    "key": "nav_plating",
+    "on_change": on_change_plating,
+    "label_visibility": "collapsed"
+}
 
-plating_nav = st.sidebar.radio(
-    "Nav Plating", 
-    modules_pl,
-    key="nav_plating",
-    index=plating_index,
-    on_change=on_change_plating,
-    label_visibility="collapsed"
-)
+# Si une valeur valide existe déjà en session, on laisse Streamlit gérer (pas d'index)
+# Sinon (ex: on est sur Accueil), on force index=None pour tout désélectionner
+if st.session_state.get("nav_plating") not in modules_pl:
+    plating_args["index"] = None
+
+plating_nav = st.sidebar.radio(**plating_args)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
