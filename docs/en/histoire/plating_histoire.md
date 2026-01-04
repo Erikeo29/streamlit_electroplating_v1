@@ -1,4 +1,4 @@
-# History of Electroplating: From Volta's Pile to Microprocessors
+## From Volta's Pile to Microprocessors
 
 Electroplating (or galvanoplasty) was one of the first industrial applications of electricity, long before the light bulb or the electric motor.
 

@@ -1,5 +1,3 @@
-# Équations Clés : Électrodéposition (Plating)
-
 La simulation de l'électrodéposition du Nickel (Ni) utilise un modèle de distribution de courant secondaire (Secondary Current Distribution).
 
 ## 1. Distribution du Potentiel

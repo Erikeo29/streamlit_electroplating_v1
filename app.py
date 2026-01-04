@@ -48,7 +48,14 @@ TRANSLATIONS = {
             "Introduction", "Python (Firedrake & PyVista)", "Conclusion",
             "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"
         ],
-        "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*",
+        "version_info": """**Version 1.3.0**
+Jan 2026 - *EQU*
+
+**Nouveautés :**
+- Bibliographie enrichie (liens gratuits)
+- Physique : équations détaillées
+- Code : format Jupyter (12 blocs)
+- Comparaison côte à côte (81 sims)""",
         "tabs_plating": ["Physique", "Code", "Comparaison PNG", "Comparaison 3D"],
         "card_plating_title": "### Électrodéposition",
         "card_plating_text": "Simulation de dépôt électrolytique et distribution de courant secondaire.",
@@ -78,7 +85,14 @@ TRANSLATIONS = {
             "Introduction", "Python (Firedrake & PyVista)", "Conclusion",
             "Key Equations", "Glossary", "A Bit of History", "Bibliography"
         ],
-        "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*",
+        "version_info": """**Version 1.3.0**
+Jan 2026 - *EQU*
+
+**What's New:**
+- Enhanced bibliography (free links)
+- Physics: detailed equations
+- Code: Jupyter-style (12 blocks)
+- Side-by-side comparison (81 sims)""",
         "tabs_plating": ["Physics", "Code", "PNG Comparison", "3D Comparison"],
         "card_plating_title": "### Electroplating",
         "card_plating_text": "Simulation of electrolytic deposition and secondary current distribution.",
@@ -276,7 +290,7 @@ elif selected_page in plating_pages:
 
     files = [
         "intro/intro_plating.md",
-        ("physics/plating_antigravity.md", "code/plating_antigravity_code.md"),  # Tabbed with 3D
+        ("physics/plating_antigravity.md", "code/plating_code.md"),  # Tabbed with 3D
         "conclusion/plating_conclusion.md",
         "equations/plating_equations.md",
         "lexique/plating_lexique.md",
@@ -309,17 +323,17 @@ elif selected_page in plating_pages:
             with tabs[2]:  # Comparaison PNG
                 st.subheader(t("png_viewer"))
 
-                # Zone de sélection des paramètres
+                # Zone de sélection des paramètres (layout compact)
                 with st.container(border=True):
-                    st.markdown(f"**{t('sim_1')}**")
-                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                    with lbl: st.markdown(f"**{t('sim_1')}**")
                     with c1: s1_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s1_ddc")
                     with c2: s1_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s1_sigma")
                     with c3: s1_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s1_j0")
                     with c4: s1_alpha = st.selectbox(t("lbl_alpha"), alpha_values, key="png_s1_alpha")
 
-                    st.markdown(f"**{t('sim_2')}**")
-                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                    with lbl: st.markdown(f"**{t('sim_2')}**")
                     with c1: s2_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s2_ddc", index=1)
                     with c2: s2_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s2_sigma", index=1)
                     with c3: s2_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s2_j0", index=1)
@@ -376,17 +390,17 @@ elif selected_page in plating_pages:
                 st.subheader(t("3d_viewer"))
                 st.info(t("3d_desc"))
 
-                # Zone de sélection des paramètres
+                # Zone de sélection des paramètres (layout compact)
                 with st.container(border=True):
-                    st.markdown(f"**{t('sim_1')}**")
-                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                    with lbl: st.markdown(f"**{t('sim_1')}**")
                     with c1: s1_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s1_ddc")
                     with c2: s1_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s1_sigma")
                     with c3: s1_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s1_j0")
                     with c4: s1_alpha_3d = st.selectbox(t("lbl_alpha"), alpha_values, key="3d_s1_alpha")
 
-                    st.markdown(f"**{t('sim_2')}**")
-                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                    with lbl: st.markdown(f"**{t('sim_2')}**")
                     with c1: s2_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s2_ddc", index=1)
                     with c2: s2_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s2_sigma", index=1)
                     with c3: s2_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s2_j0", index=1)

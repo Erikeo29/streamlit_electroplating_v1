@@ -1,4 +1,4 @@
-# Histoire de l'Électrodéposition : De la Pile de Volta aux Microprocesseurs
+## De la Pile de Volta aux Microprocesseurs
 
 L'électrodéposition (ou galvanoplastie) est l'une des premières applications industrielles de l'électricité, bien avant l'ampoule ou le moteur électrique.
 

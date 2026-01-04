@@ -1,5 +1,3 @@
-# Introduction : Électrodéposition (Plating)
-
 L'électrodéposition est un procédé permettant de déposer une couche métallique sur un substrat conducteur par réduction électrochimique d'ions métalliques en solution.
 
 ## Le Système Nickel
