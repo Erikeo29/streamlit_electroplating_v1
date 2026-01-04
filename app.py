@@ -84,7 +84,7 @@ h1, h2, h3 {
     </svg>
 </a>
 <div id="top"></div>
-"""
+"
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # --- Chemins ---
@@ -95,14 +95,14 @@ ASSETS_PATH = os.path.join(ROOT_DIR, "assets")
 # --- Dictionnaire de Traduction UI ---
 TRANSLATIONS = {
     "fr": {
-        "title": "Plateforme de Simulation d\'Électrodéposition",
+        "title": "Plateforme de Simulation d'Électrodéposition",
         "sidebar_title": "Simulation",
         "gen_header": "Général",
         "gen_home": "Accueil",
         "plating_header": "Électrodéposition",
         "plating_modules": [
             "Introduction", "Python (Firedrake & PyVista)", "Conclusion", 
-            "Équations clés", "Lexique", "Un peu d\'histoire", "Bibliographie"
+            "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"
         ],
         "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*\n\n**Nouveautés :**\n- Visualisation 3D Interactive (PyVista)\n- Intégration Firedrake\n\n**Précédemment (1.0.1) :**\n- Support bilingue FR/EN",
         "tabs_plating": ["Physique", "Code", "Visualisation 3D", "Exemples GIF", "Exemples PNG"],
@@ -110,9 +110,9 @@ TRANSLATIONS = {
         "card_plating_text": "Simulation de dépôt électrolytique et distribution de courant secondaire.",
         "gif_coming_soon": "Visualisation dynamique (Gifs) - À venir",
         "no_gif": "Aucune animation GIF disponible pour le moment.",
-        "png_thickness": "Cartes d\'épaisseur",
+        "png_thickness": "Cartes d'épaisseur",
         "3d_interactive": "Visualisation 3D Interactive",
-        "3d_desc": "Visualisation interactive de l\'épaisseur de dépôt (extrudée x1000). Utilisez la souris pour tourner, zoomer et explorer la géométrie.",
+        "3d_desc": "Visualisation interactive de l'épaisseur de dépôt (extrudée x1000). Utilisez la souris pour tourner, zoomer et explorer la géométrie.",
         "3d_not_found": "Fichier de visualisation 3D introuvable."
     },
     "en": {
@@ -194,9 +194,9 @@ def search_images(base_path, extensions=['.png', '.jpg', '.jpeg']):
 
 # --- Barre Latérale ---
 
-# Sélecteur de langue avec préservation navigation
-old_lang = st.session_state.get('lang', 'fr')
+# Sélecteur de langue
 col_l1, col_l2 = st.sidebar.columns(2)
+old_lang = st.session_state.get('lang', 'fr')
 lang_selection = st.sidebar.radio(
     "Language",
     ["🇫🇷 FR", "🇬🇧 EN"],
@@ -204,9 +204,14 @@ lang_selection = st.sidebar.radio(
     label_visibility="collapsed",
     index=0 if old_lang == "fr" else 1
 )
+
 new_lang = "fr" if "FR" in lang_selection else "en"
 
-# Si la langue change, convertir la sélection actuelle
+# --- Mapping Modules (CRITICAL: Must be defined BEFORE usage below) ---
+modules_pl = TRANSLATIONS["fr"]["plating_modules"]
+modules_pl_en = TRANSLATIONS["en"]["plating_modules"]
+
+# Si la langue change, préserver la navigation
 if new_lang != old_lang:
     modules_pl_old = TRANSLATIONS[old_lang]["plating_modules"]
     modules_pl_new = TRANSLATIONS[new_lang]["plating_modules"]
@@ -216,13 +221,9 @@ if new_lang != old_lang:
         st.session_state.nav_plating = modules_pl_new[idx]
         
     st.session_state.lang = new_lang
-
-# --- Mapping Modules (FR/EN correspondence) ---\nmodules_pl = TRANSLATIONS["fr"]["plating_modules"]\nmodules_pl_en = TRANSLATIONS["en"]["plating_modules"]
     st.rerun()
 
 st.session_state.lang = new_lang
-
-# --- Mapping Modules (FR/EN correspondence) ---\nmodules_pl = TRANSLATIONS["fr"]["plating_modules"]\nmodules_pl_en = TRANSLATIONS["en"]["plating_modules"]
 
 st.sidebar.title(t("sidebar_title"))
 
@@ -241,7 +242,7 @@ if 'nav_plating' not in st.session_state: st.session_state.nav_plating = None
 st.sidebar.subheader(t("gen_header"))
 main_nav = st.sidebar.radio(
     "Nav Gen", 
-    [t("gen_home")], 
+    [t("gen_home")],
     key="nav_gen", 
     on_change=on_change_gen,
     label_visibility="collapsed"
@@ -250,7 +251,7 @@ main_nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.subheader(t("plating_header"))
 
-# Calcul de l'index pour maintenir la sélection visuelle
+# Calcul de l'index pour maintenir la sélection visuelle (modules_pl est bien défini)
 plating_index = None
 if st.session_state.get("nav_plating") in modules_pl:
     plating_index = modules_pl.index(st.session_state.nav_plating)
@@ -263,9 +264,9 @@ plating_nav = st.sidebar.radio(
     on_change=on_change_plating,
     label_visibility="collapsed"
 )
+
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
-
 
 # --- Contenu Principal ---
 
