@@ -6,67 +6,32 @@ import streamlit.components.v1 as components
 # --- Configuration de la page ---
 st.set_page_config(page_title="Electroplating Simulation Platform", layout="wide")
 
-# --- Styles CSS personnalisés ---
-custom_css = """
-<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
-.stDeployButton {display: none;}
-[data-testid="stToolbar"] {display: none;}
-
-.stTabs [data-baseweb="tab-list"] { gap: 8px; }
-.stTabs [data-baseweb="tab"] {
-    height: 50px;
-    padding: 10px 24px;
-    background-color: #f0f2f6;
-    border-radius: 8px 8px 0 0;
-    font-weight: 600;
-    font-size: 16px;
-}
-.stTabs [aria-selected="true"] {
-    background-color: #004b87;
-    color: white;
-}
-
-.nav-button {
-    position: fixed;
-    right: 30px;
-    z-index: 9999;
-    background-color: #004b87;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-.nav-button:hover {
-    background-color: #003366;
-    transform: scale(1.1);
-}
-.back-to-top { bottom: calc(50% + 30px); }
-.scroll-to-bottom { bottom: calc(50% - 30px); }
-
-.main { font-family: 'serif'; }
-h1, h2, h3 { color: #004b87; }
-</style>
-
-<a href="#top" class="nav-button back-to-top" title="Haut"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg></a>
-<a href="#bottom" class="nav-button scroll-to-bottom" title="Bas"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 20l8-8h-5V4h-6v8H4z"/></svg></a>
-<div id="top"></div>
-"""
-st.markdown(custom_css, unsafe_allow_html=True)
-
 # --- Chemins ---
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 DOC_PATH = os.path.join(ROOT_DIR, "docs")
 ASSETS_PATH = os.path.join(ROOT_DIR, "assets")
+CSS_PATH = os.path.join(ASSETS_PATH, "style.css")
+
+# --- Chargement CSS externe ---
+if os.path.exists(CSS_PATH):
+    with open(CSS_PATH, 'r') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+# --- Boutons Navigation HTML ---
+nav_buttons_html = """
+<a href="#top" class="nav-button back-to-top" title="Retour en haut / Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M12 4l-8 8h5v8h6v-8h5z"/>
+    </svg>
+</a>
+<a href="#bottom" class="nav-button scroll-to-bottom" title="Aller en bas / Go to bottom">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M12 20l8-8h-5V4h-6v8H4z"/>
+    </svg>
+</a>
+<div id="top"></div>
+"""
+st.markdown(nav_buttons_html, unsafe_allow_html=True)
 
 # --- Traductions ---
 TRANSLATIONS = {
@@ -136,6 +101,9 @@ def search_images(base_path, extensions=['.png', '.jpg', '.jpeg']):
                 images.append(os.path.join(root, file))
     return images
 
+def display_smart_markdown(content):
+    st.markdown(content)
+
 # --- Sidebar ---
 col_l1, col_l2 = st.sidebar.columns(2)
 old_lang = st.session_state.get('lang', 'fr')
@@ -155,7 +123,7 @@ if new_lang != old_lang:
         idx = modules_old.index(current)
         st.session_state.nav_plating = modules_new[idx]
         st.session_state.nav_gen = None
-    
+        
     st.session_state.lang = new_lang
     st.rerun()
 
@@ -257,4 +225,4 @@ elif plating_nav:
     except Exception as e:
         st.error(f"Navigation Error: {e}")
 
-st.markdown("<div id=\"bottom\"></div", unsafe_allow_html=True)
+st.markdown('<div id="bottom"></div>', unsafe_allow_html=True)
