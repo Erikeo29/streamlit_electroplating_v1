@@ -290,7 +290,7 @@ elif selected_page in plating_pages:
 
     files = [
         "intro/intro_plating.md",
-        ("physics/plating_antigravity.md", "code/plating_code.md"),  # Tabbed with 3D
+        ("physics/plating_physics.md", "code/plating_code.md"),  # Tabbed with 3D
         "conclusion/plating_conclusion.md",
         "equations/plating_equations.md",
         "lexique/plating_lexique.md",
