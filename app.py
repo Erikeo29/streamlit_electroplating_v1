@@ -251,10 +251,12 @@ main_nav = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.subheader(t("plating_header"))
 
-# Calcul de l'index pour maintenir la sélection visuelle (modules_pl est bien défini)
-plating_index = None
-if st.session_state.get("nav_plating") in modules_pl:
-    plating_index = modules_pl.index(st.session_state.nav_plating)
+# Calcul sécurisé de l'index pour st.radio
+current_selection = st.session_state.get("nav_plating")
+if current_selection in modules_pl:
+    plating_index = modules_pl.index(current_selection)
+else:
+    plating_index = None  # Laisser None si rien n'est sélectionné (ex: Accueil actif)
 
 plating_nav = st.sidebar.radio(
     "Nav Plating", 
