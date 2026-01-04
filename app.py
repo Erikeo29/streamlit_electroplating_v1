@@ -84,7 +84,7 @@ h1, h2, h3 {
     </svg>
 </a>
 <div id="top"></div>
-"
+"""
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # --- Chemins ---
