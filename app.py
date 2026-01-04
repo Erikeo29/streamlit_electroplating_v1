@@ -1,7 +1,8 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import base64
 import os
-import streamlit.components.v1 as components
+import pandas as pd
 
 # --- Configuration de la page ---
 st.set_page_config(page_title="Electroplating Simulation Platform", layout="wide")
@@ -10,7 +11,9 @@ st.set_page_config(page_title="Electroplating Simulation Platform", layout="wide
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 DOC_PATH = os.path.join(ROOT_DIR, "docs")
 ASSETS_PATH = os.path.join(ROOT_DIR, "assets")
+DATA_PATH = os.path.join(ROOT_DIR, "data")
 CSS_PATH = os.path.join(ASSETS_PATH, "style.css")
+STUDY_RESULTS_PATH = os.path.join(ASSETS_PATH, "plating/study_results")
 
 # --- Chargement CSS externe ---
 if os.path.exists(CSS_PATH):
@@ -39,204 +42,402 @@ TRANSLATIONS = {
         "title": "Plateforme de Simulation d'Électrodéposition",
         "sidebar_title": "Simulation",
         "gen_header": "Général",
-        "gen_home": "Accueil",
+        "gen_pages": ["Accueil"],
         "plating_header": "Électrodéposition",
-        "plating_modules": [
-            "Introduction", "Python (Firedrake & PyVista)", "Conclusion", 
+        "plating_pages": [
+            "Introduction", "Python (Firedrake & PyVista)", "Conclusion",
             "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"
         ],
         "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*",
-        "tabs_plating": ["Physique", "Code", "Visualisation 3D", "Exemples GIF", "Exemples PNG"],
+        "tabs_plating": ["Physique", "Code", "Comparaison PNG", "Comparaison 3D"],
         "card_plating_title": "### Électrodéposition",
         "card_plating_text": "Simulation de dépôt électrolytique et distribution de courant secondaire.",
-        "gif_coming_soon": "Visualisation dynamique (Gifs) - À venir",
-        "no_gif": "Aucune animation GIF disponible.",
-        "png_thickness": "Cartes d'épaisseur",
-        "3d_interactive": "Visualisation 3D Interactive",
+        "sim_1": "Simulation 1",
+        "sim_2": "Simulation 2",
+        "btn_compare": "COMPARER",
+        "combo_unavailable": "Combinaison non disponible",
+        "png_viewer": "Comparaison des résultats (PNG)",
+        "3d_viewer": "Comparaison 3D Interactive",
         "3d_desc": "Visualisation interactive de l'épaisseur de dépôt (extrudée x1000).",
-        "3d_not_found": "Fichier de visualisation 3D introuvable."
+        "3d_not_found": "Fichier de visualisation 3D introuvable.",
+        "lbl_ddc": "DDC (A/dm²)",
+        "lbl_sigma": "σ (S/m)",
+        "lbl_j0": "j₀ (A/m²)",
+        "lbl_alpha": "α",
+        "thickness_map": "Carte d'épaisseur",
+        "current_density": "Densité de courant",
+        "view_3d_iso": "Vue 3D isométrique"
     },
     "en": {
         "title": "Electroplating Simulation Platform",
         "sidebar_title": "Simulation",
         "gen_header": "General",
-        "gen_home": "Home",
+        "gen_pages": ["Home"],
         "plating_header": "Electroplating",
-        "plating_modules": [
-            "Introduction", "Python (Firedrake & PyVista)", "Conclusion", 
+        "plating_pages": [
+            "Introduction", "Python (Firedrake & PyVista)", "Conclusion",
             "Key Equations", "Glossary", "A Bit of History", "Bibliography"
         ],
         "version_info": "**Version 1.1.0**\nJan 2026\n*EQU*",
-        "tabs_plating": ["Physics", "Code", "3D Visualization", "GIF Examples", "PNG Examples"],
+        "tabs_plating": ["Physics", "Code", "PNG Comparison", "3D Comparison"],
         "card_plating_title": "### Electroplating",
         "card_plating_text": "Simulation of electrolytic deposition and secondary current distribution.",
-        "gif_coming_soon": "Dynamic Visualization (Gifs) - Coming Soon",
-        "no_gif": "No GIF animation available.",
-        "png_thickness": "Thickness Maps",
-        "3d_interactive": "Interactive 3D Visualization",
+        "sim_1": "Simulation 1",
+        "sim_2": "Simulation 2",
+        "btn_compare": "COMPARE",
+        "combo_unavailable": "Combination not available",
+        "png_viewer": "Results Comparison (PNG)",
+        "3d_viewer": "Interactive 3D Comparison",
         "3d_desc": "Interactive visualization of deposition thickness (extruded x1000).",
-        "3d_not_found": "3D visualization file not found."
+        "3d_not_found": "3D visualization file not found.",
+        "lbl_ddc": "DDC (A/dm²)",
+        "lbl_sigma": "σ (S/m)",
+        "lbl_j0": "j₀ (A/m²)",
+        "lbl_alpha": "α",
+        "thickness_map": "Thickness Map",
+        "current_density": "Current Density",
+        "view_3d_iso": "3D Isometric View"
     }
 }
 
+# --- Fonctions de Langue ---
 def get_language():
-    if 'lang' not in st.session_state: st.session_state.lang = 'fr'
+    if 'lang' not in st.session_state:
+        st.session_state.lang = 'fr'
     return st.session_state.lang
 
-def t(key): return TRANSLATIONS[get_language()].get(key, key)
+def t(key):
+    """Retourne la traduction pour la clé donnée."""
+    lang = get_language()
+    return TRANSLATIONS[lang].get(key, key)
 
 def load_file_content(relative_path):
     lang = get_language()
     full_path = os.path.join(DOC_PATH, lang, relative_path)
     try:
-        with open(full_path, 'r', encoding='utf-8') as f: return f.read()
-    except Exception: return f"File not found: {relative_path}"
+        with open(full_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except Exception:
+        return f"File not found: {relative_path}"
+
+def display_smart_markdown(content):
+    st.markdown(content)
 
 def search_images(base_path, extensions=['.png', '.jpg', '.jpeg']):
     images = []
-    if not os.path.exists(base_path): return images
+    if not os.path.exists(base_path):
+        return images
     for root, dirs, files in os.walk(base_path):
         for file in files:
             if any(file.lower().endswith(ext) for ext in extensions):
                 images.append(os.path.join(root, file))
     return images
 
-def display_smart_markdown(content):
-    st.markdown(content)
+@st.cache_data(ttl=600)
+def load_ed_mapping():
+    """Charge le mapping des simulations ED depuis le CSV."""
+    try:
+        csv_path = os.path.join(DATA_PATH, 'ED_mapping.csv')
+        df = pd.read_csv(csv_path, sep=';', encoding='utf-8', decimal=',')
+        return df
+    except Exception as e:
+        st.error(f"Erreur chargement CSV: {e}")
+        return pd.DataFrame()
 
-# --- Gestion de la Langue ---
-col_l1, col_l2 = st.sidebar.columns(2)
+def get_simulation_by_params(df, ddc, sigma, j0, alpha):
+    """Trouve une simulation par ses paramètres (première correspondance)."""
+    mask = (
+        (df['DDC_target_A_dm2'] == ddc) &
+        (df['sigma_S_m'] == sigma) &
+        (df['j0_A_m2'] == j0) &
+        (df['alpha'] == alpha)
+    )
+    matches = df[mask]
+    if len(matches) > 0:
+        return matches.iloc[0]
+    return None
+
+def get_simulation_files(sim_row):
+    """Retourne les chemins des fichiers pour une simulation."""
+    if sim_row is None:
+        return None
+    sim_id = f"{int(sim_row['id']):03d}"
+    return {
+        'thickness': os.path.join(STUDY_RESULTS_PATH, f"{sim_id}_ED_thickness_map.png"),
+        'current': os.path.join(STUDY_RESULTS_PATH, f"{sim_id}_ED_current_density.png"),
+        '3d_iso': os.path.join(STUDY_RESULTS_PATH, f"{sim_id}_ED_3D_iso.png"),
+        '3d_html': os.path.join(STUDY_RESULTS_PATH, f"{sim_id}_ED_3D_interactive.html"),
+        'cv': sim_row['CV_percent'],
+        'thickness_avg': sim_row['thickness_avg_um'],
+    }
+
+# --- Callbacks pour Navigation ---
+def on_change_gen():
+    st.session_state.nav_plating = None
+
+def on_change_plating():
+    st.session_state.nav_gen = None
+
+# --- Initialisation des États (clés statiques) ---
+if 'nav_gen' not in st.session_state:
+    st.session_state.nav_gen = t("gen_pages")[0]
+if 'nav_plating' not in st.session_state:
+    st.session_state.nav_plating = None
+
+# --- Barre Latérale ---
+
+# Sélecteur de langue avec conservation de la page
 old_lang = st.session_state.get('lang', 'fr')
-lang_selection = st.sidebar.radio("Lang", ["🇫🇷 FR", "🇬🇧 EN"], horizontal=True, label_visibility="collapsed", index=0 if old_lang == "fr" else 1)
+lang_selection = st.sidebar.radio(
+    "Language",
+    ["🇫🇷 FR", "🇬🇧 EN"],
+    horizontal=True,
+    label_visibility="collapsed",
+    index=0 if old_lang == "fr" else 1
+)
 new_lang = "fr" if "FR" in lang_selection else "en"
 
-# Modules definitions
-modules_pl = TRANSLATIONS["fr"]["plating_modules"]
-modules_pl_en = TRANSLATIONS["en"]["plating_modules"]
-
-# Clés dynamiques pour les widgets
-key_nav_gen = f"nav_gen_{new_lang}"
-key_nav_plating = f"nav_plating_{new_lang}"
-
+# Si la langue change, convertir la sélection actuelle
 if new_lang != old_lang:
-    # Récupérer état ancien
-    old_key_plating = f"nav_plating_{old_lang}"
-    current_val = st.session_state.get(old_key_plating)
-    
-    modules_old = TRANSLATIONS[old_lang]["plating_modules"]
-    modules_new = TRANSLATIONS[new_lang]["plating_modules"]
-    
-    
-    st.session_state.lang = new_lang # Mise à jour immédiate pour que t() fonctionne
+    old_gen_pages = TRANSLATIONS[old_lang]["gen_pages"]
+    old_plating_pages = TRANSLATIONS[old_lang]["plating_pages"]
+    new_gen_pages = TRANSLATIONS[new_lang]["gen_pages"]
+    new_plating_pages = TRANSLATIONS[new_lang]["plating_pages"]
 
-    if current_val and current_val in modules_old:
-        idx = modules_old.index(current_val)
-        st.session_state[key_nav_plating] = modules_new[idx]
-        st.session_state[key_nav_gen] = None
+    if st.session_state.nav_gen and st.session_state.nav_gen in old_gen_pages:
+        idx = old_gen_pages.index(st.session_state.nav_gen)
+        st.session_state.nav_gen = new_gen_pages[idx]
+    elif st.session_state.nav_plating and st.session_state.nav_plating in old_plating_pages:
+        idx = old_plating_pages.index(st.session_state.nav_plating)
+        st.session_state.nav_plating = new_plating_pages[idx]
     else:
-        st.session_state[key_nav_gen] = t("gen_home")
-        st.session_state[key_nav_plating] = None
-    
+        # Par défaut, sélectionner Accueil/Home
+        st.session_state.nav_gen = new_gen_pages[0]
+        st.session_state.nav_plating = None
+
+    st.session_state.lang = new_lang
     st.rerun()
 
 st.session_state.lang = new_lang
+
 st.sidebar.title(t("sidebar_title"))
+st.sidebar.markdown("---")
 
-# --- Callbacks ---
-def on_change_gen():
-    st.session_state[key_nav_plating] = None
-
-def on_change_plating():
-    st.session_state[key_nav_gen] = None
-
-# --- Navigation GEN ---
+# Navigation Général
 st.sidebar.subheader(t("gen_header"))
-gen_options = [t("gen_home")]
-
-if key_nav_gen not in st.session_state and key_nav_plating not in st.session_state:
-    st.session_state[key_nav_gen] = t("gen_home")
-
-gen_args = {
-    "label": "Nav Gen",
-    "options": gen_options,
-    "key": key_nav_gen,
-    "on_change": on_change_gen,
-    "label_visibility": "collapsed"
-}
-
-if st.session_state.get(key_nav_plating) is not None:
-    gen_args["index"] = None
-
-main_nav = st.sidebar.radio(**gen_args)
+nav_gen = st.sidebar.radio(
+    "Nav Gen",
+    t("gen_pages"),
+    key="nav_gen",
+    on_change=on_change_gen,
+    label_visibility="collapsed"
+)
 
 st.sidebar.markdown("---")
 
-# --- Navigation Plating ---
+# Navigation Plating
 st.sidebar.subheader(t("plating_header"))
-current_modules = modules_pl if new_lang == "fr" else modules_pl_en
-
-plating_args = {
-    "label": "Nav Plating",
-    "options": current_modules,
-    "key": key_nav_plating,
-    "on_change": on_change_plating,
-    "label_visibility": "collapsed"
-}
-
-if st.session_state.get(key_nav_gen) is not None:
-    plating_args["index"] = None
-
-plating_nav = st.sidebar.radio(**plating_args)
+nav_plating = st.sidebar.radio(
+    "Nav Plating",
+    t("plating_pages"),
+    key="nav_plating",
+    index=None,
+    on_change=on_change_plating,
+    label_visibility="collapsed"
+)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
 
-# --- Content ---
-if main_nav == t("gen_home") or (plating_nav is None and main_nav is None):
+# --- Déterminer la page active ---
+selected_page = None
+if nav_plating:
+    selected_page = nav_plating
+elif nav_gen:
+    selected_page = nav_gen
+else:
+    selected_page = t("gen_pages")[0]
+
+# --- Pages ---
+gen_pages = t("gen_pages")
+plating_pages = t("plating_pages")
+
+# ===== PAGE ACCUEIL =====
+if selected_page == gen_pages[0]:
     st.title(t("title"))
     st.markdown(load_file_content("accueil/accueil.md"))
     st.success(t("card_plating_title"))
     st.write(t("card_plating_text"))
 
-elif plating_nav:
-    st.title(f"Plating : {plating_nav}")
+# ===== PAGES PLATING =====
+elif selected_page in plating_pages:
+    idx = plating_pages.index(selected_page)
+    st.title(f"Plating : {selected_page}")
+
+    files = [
+        "intro/intro_plating.md",
+        ("physics/plating_antigravity.md", "code/plating_antigravity_code.md"),  # Tabbed with 3D
+        "conclusion/plating_conclusion.md",
+        "equations/plating_equations.md",
+        "lexique/plating_lexique.md",
+        "histoire/plating_histoire.md",
+        "biblio/plating_biblio.md"
+    ]
+
     try:
-        idx = current_modules.index(plating_nav)
-        files = [
-            "intro/intro_plating.md",
-            ("physics/plating_antigravity.md", "code/plating_antigravity_code.md"), # Tabbed with 3D
-            "conclusion/plating_conclusion.md", "equations/plating_equations.md",
-            "lexique/plating_lexique.md", "histoire/plating_histoire.md", "biblio/plating_biblio.md"
-        ]
-        
         target = files[idx]
-        
-        if isinstance(target, tuple): # Tabs + 3D
+
+        if isinstance(target, tuple):
+            # Page avec onglets (Python Firedrake) - Comparaison de simulations
             tabs = st.tabs(t("tabs_plating"))
-            with tabs[0]: st.markdown(load_file_content(target[0]))
-            with tabs[1]: st.markdown(load_file_content(target[1]))
-            with tabs[2]: # 3D
-                st.subheader(t("3d_interactive"))
+
+            # Charger le mapping des simulations
+            df_mapping = load_ed_mapping()
+
+            # Valeurs disponibles pour les sélecteurs
+            ddc_values = [4.0, 8.0, 12.0]
+            sigma_values = [10.0, 25.0, 40.0]
+            j0_values = [0.34, 0.68, 1.36]
+            alpha_values = [0.4, 0.5, 0.6]
+
+            with tabs[0]:  # Physique
+                st.markdown(load_file_content(target[0]))
+
+            with tabs[1]:  # Code
+                st.markdown(load_file_content(target[1]))
+
+            with tabs[2]:  # Comparaison PNG
+                st.subheader(t("png_viewer"))
+
+                # Zone de sélection des paramètres
+                with st.container(border=True):
+                    st.markdown(f"**{t('sim_1')}**")
+                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    with c1: s1_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s1_ddc")
+                    with c2: s1_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s1_sigma")
+                    with c3: s1_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s1_j0")
+                    with c4: s1_alpha = st.selectbox(t("lbl_alpha"), alpha_values, key="png_s1_alpha")
+
+                    st.markdown(f"**{t('sim_2')}**")
+                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    with c1: s2_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s2_ddc", index=1)
+                    with c2: s2_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s2_sigma", index=1)
+                    with c3: s2_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s2_j0", index=1)
+                    with c4: s2_alpha = st.selectbox(t("lbl_alpha"), alpha_values, key="png_s2_alpha", index=1)
+
+                    _, btn_col, _ = st.columns([1, 2, 1])
+                    with btn_col:
+                        btn_png = st.button(t("btn_compare"), type="primary", use_container_width=True, key="btn_png")
+
+                # Affichage des résultats
+                if btn_png or st.session_state.get('show_png', False):
+                    st.session_state.show_png = True
+
+                    sim1 = get_simulation_by_params(df_mapping, s1_ddc, s1_sigma, s1_j0, s1_alpha)
+                    sim2 = get_simulation_by_params(df_mapping, s2_ddc, s2_sigma, s2_j0, s2_alpha)
+                    files1 = get_simulation_files(sim1)
+                    files2 = get_simulation_files(sim2)
+
+                    col1, col2 = st.columns(2)
+
+                    with col1:
+                        st.markdown(f"### {t('sim_1')}")
+                        if files1:
+                            st.caption(f"CV = {files1['cv']:.2f}% | Épaisseur moy. = {files1['thickness_avg']:.3f} µm")
+                            st.markdown(f"**{t('thickness_map')}**")
+                            if os.path.exists(files1['thickness']):
+                                st.image(files1['thickness'], use_container_width=True)
+                            st.markdown(f"**{t('current_density')}**")
+                            if os.path.exists(files1['current']):
+                                st.image(files1['current'], use_container_width=True)
+                            st.markdown(f"**{t('view_3d_iso')}**")
+                            if os.path.exists(files1['3d_iso']):
+                                st.image(files1['3d_iso'], use_container_width=True)
+                        else:
+                            st.warning(t("combo_unavailable"))
+
+                    with col2:
+                        st.markdown(f"### {t('sim_2')}")
+                        if files2:
+                            st.caption(f"CV = {files2['cv']:.2f}% | Épaisseur moy. = {files2['thickness_avg']:.3f} µm")
+                            st.markdown(f"**{t('thickness_map')}**")
+                            if os.path.exists(files2['thickness']):
+                                st.image(files2['thickness'], use_container_width=True)
+                            st.markdown(f"**{t('current_density')}**")
+                            if os.path.exists(files2['current']):
+                                st.image(files2['current'], use_container_width=True)
+                            st.markdown(f"**{t('view_3d_iso')}**")
+                            if os.path.exists(files2['3d_iso']):
+                                st.image(files2['3d_iso'], use_container_width=True)
+                        else:
+                            st.warning(t("combo_unavailable"))
+
+            with tabs[3]:  # Comparaison 3D
+                st.subheader(t("3d_viewer"))
                 st.info(t("3d_desc"))
-                html_path = os.path.join(ASSETS_PATH, "plating/results/3d_view.html")
-                if os.path.exists(html_path):
-                    try:
-                        with open(html_path, 'r', encoding='utf-8') as f:
-                            html_content = f.read()
-                        st.components.v1.html(html_content, height=600, scrolling=False)
-                    except Exception as e_html:
-                        st.error(f"Error loading 3D view: {e_html}")
-                else:
-                    st.warning(t("3d_not_found"))
-            with tabs[3]: st.info(t("gif_coming_soon"))
-            with tabs[4]: 
-                st.subheader(t("png_thickness"))
-                res_img = os.path.join(ASSETS_PATH, "plating/results/plating_result_refined.png")
-                if os.path.exists(res_img): st.image(res_img, use_container_width=True)
+
+                # Zone de sélection des paramètres
+                with st.container(border=True):
+                    st.markdown(f"**{t('sim_1')}**")
+                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    with c1: s1_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s1_ddc")
+                    with c2: s1_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s1_sigma")
+                    with c3: s1_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s1_j0")
+                    with c4: s1_alpha_3d = st.selectbox(t("lbl_alpha"), alpha_values, key="3d_s1_alpha")
+
+                    st.markdown(f"**{t('sim_2')}**")
+                    _, c1, c2, c3, c4, _ = st.columns([0.5, 1, 1, 1, 1, 0.5])
+                    with c1: s2_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s2_ddc", index=1)
+                    with c2: s2_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s2_sigma", index=1)
+                    with c3: s2_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s2_j0", index=1)
+                    with c4: s2_alpha_3d = st.selectbox(t("lbl_alpha"), alpha_values, key="3d_s2_alpha", index=1)
+
+                    _, btn_col, _ = st.columns([1, 2, 1])
+                    with btn_col:
+                        btn_3d = st.button(t("btn_compare"), type="primary", use_container_width=True, key="btn_3d")
+
+                # Affichage des visualisations 3D
+                if btn_3d or st.session_state.get('show_3d', False):
+                    st.session_state.show_3d = True
+
+                    sim1_3d = get_simulation_by_params(df_mapping, s1_ddc_3d, s1_sigma_3d, s1_j0_3d, s1_alpha_3d)
+                    sim2_3d = get_simulation_by_params(df_mapping, s2_ddc_3d, s2_sigma_3d, s2_j0_3d, s2_alpha_3d)
+                    files1_3d = get_simulation_files(sim1_3d)
+                    files2_3d = get_simulation_files(sim2_3d)
+
+                    col1, col2 = st.columns(2)
+
+                    with col1:
+                        st.markdown(f"### {t('sim_1')}")
+                        if files1_3d and os.path.exists(files1_3d['3d_html']):
+                            st.caption(f"CV = {files1_3d['cv']:.2f}%")
+                            try:
+                                with open(files1_3d['3d_html'], 'r', encoding='utf-8') as f:
+                                    html_content = f.read()
+                                components.html(html_content, height=500, scrolling=False)
+                            except Exception as e:
+                                st.error(f"Erreur: {e}")
+                        else:
+                            st.warning(t("combo_unavailable"))
+
+                    with col2:
+                        st.markdown(f"### {t('sim_2')}")
+                        if files2_3d and os.path.exists(files2_3d['3d_html']):
+                            st.caption(f"CV = {files2_3d['cv']:.2f}%")
+                            try:
+                                with open(files2_3d['3d_html'], 'r', encoding='utf-8') as f:
+                                    html_content = f.read()
+                                components.html(html_content, height=500, scrolling=False)
+                            except Exception as e:
+                                st.error(f"Erreur: {e}")
+                        else:
+                            st.warning(t("combo_unavailable"))
+
         else:
             st.markdown(load_file_content(target))
-            
+
     except Exception as e:
         st.error(f"Navigation Error: {e}")
 
+# --- Ancre de fin de page ---
 st.markdown('<div id="bottom"></div>', unsafe_allow_html=True)

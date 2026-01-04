@@ -1,2 +1,4 @@
 assets/**/*.html linguist-generated=true
 docs/**/*.md linguist-documentation=true
+assets/plating/study_results/*.png filter=lfs diff=lfs merge=lfs -text
+assets/plating/study_results/*.html filter=lfs diff=lfs merge=lfs -text

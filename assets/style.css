@@ -58,3 +58,38 @@ header {visibility: hidden;}
 h1, h2, h3 {
     color: #004b87;
 }
+
+/* Espacement des radio buttons dans la sidebar */
+[data-testid="stSidebar"] .stRadio > div {
+    gap: 6px;
+}
+
+/* Améliorer la visibilité des radio buttons */
+[data-testid="stSidebar"] .stRadio > div > label > div:first-child {
+    border: 2px solid #666;
+}
+
+/* Réduire l'espace des séparateurs dans la sidebar */
+[data-testid="stSidebar"] hr {
+    margin: 4px 0;
+}
+
+/* Réduire l'espace sous les subheaders de la sidebar */
+[data-testid="stSidebar"] [data-testid="stSubheader"] {
+    margin-bottom: -10px;
+}
+
+/* Réduire l'espace des paragraphes markdown dans la sidebar */
+[data-testid="stSidebar"] [data-testid="stMarkdown"] p {
+    margin-bottom: 0.3rem;
+}
+
+/* Selectbox compacts dans les containers */
+[data-testid="stVerticalBlock"] .stSelectbox {
+    margin-bottom: -10px;
+}
+
+/* Container de comparaison */
+[data-testid="stVerticalBlock"] [data-testid="stVerticalBlockBorderWrapper"] {
+    padding: 0.5rem;
+}
