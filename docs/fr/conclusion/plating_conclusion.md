@@ -47,22 +47,18 @@ L'approche de distribution de courant secondaire implémentée avec Firedrake pe
 
 ## 4. Perspectives de développement
 
-### Court terme (Étude 2)
+### Modélisation physique
 - **Distribution tertiaire** : Intégration du transport de masse (Nernst-Planck) pour capturer l'appauvrissement en ions métalliques à la surface, particulièrement critique pour les DDC élevées.
-- **Analyse de sensibilité au maillage** : Étude de convergence pour optimiser le compromis précision/temps de calcul.
+- **Couplage multiphysique** : Intégration des effets thermiques et hydrodynamiques.
 
-### Moyen terme
+### Numérique et maillage
+- **Analyse de sensibilité au maillage** : Étude de convergence pour optimiser le compromis précision/temps de calcul.
 - **Géométries 3D réelles** : Extension à des pièces industrielles complexes (connecteurs, PCB).
-- **Évolution temporelle** : Suivi de la croissance du dépôt au cours du temps.
+
+### Évolution temporelle
+- **Suivi dynamique** : Suivi de la croissance du dépôt au cours du temps.
 - **Validation expérimentale** : Comparaison avec des mesures profilométriques.
 
-### Long terme
-- **Couplage multiphysique** : Intégration des effets thermiques et hydrodynamiques.
+### Optimisation
 - **Optimisation inverse** : Recherche automatique des paramètres optimaux pour une uniformité cible.
 - **Machine Learning** : Prédiction rapide du CV% à partir des paramètres d'entrée.
-
----
-
-## Références clés
-
-Pour approfondir les concepts présentés, consulter la page **Bibliographie** qui contient des liens vers des ressources gratuites (PDF, vidéos, tutoriels).
