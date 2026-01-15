@@ -49,8 +49,8 @@ Jan 2026 - *EQU*
         "btn_reset": "RÉINITIALISER",
         "combo_unavailable": "Combinaison non disponible",
         "png_viewer": "Comparaison des résultats (2D)",
-        "3d_viewer": "Comparaison 3D Interactive",
-        "3d_desc": "Visualisation interactive de l'épaisseur de dépôt (extrudée x1000).",
+        "3d_viewer": "Comparaison 3D Interactive (épaisseur extrudée x1000) - Utiliser la souris pour zoomer et pivoter",
+        "3d_desc": "",
         "3d_not_found": "Fichier de visualisation 3D introuvable.",
         # Parameter labels
         "lbl_ddc": "DDC (A/dm²)",
@@ -106,8 +106,8 @@ Jan 2026 - *EQU*
         "btn_reset": "RESET",
         "combo_unavailable": "Combination not available",
         "png_viewer": "Results Comparison (2D)",
-        "3d_viewer": "Interactive 3D Comparison",
-        "3d_desc": "Interactive visualization of deposition thickness (extruded x1000).",
+        "3d_viewer": "Interactive 3D Comparison (thickness extruded x1000) - Use mouse to zoom and rotate",
+        "3d_desc": "",
         "3d_not_found": "3D visualization file not found.",
         # Parameter labels
         "lbl_ddc": "DDC (A/dm²)",
@@ -511,16 +511,24 @@ elif selected_page == study_pages[0]:
             # CSS pour boutons colorés
             st.markdown("""
             <style>
-            /* Bouton Réinitialiser : rouge */
+            /* Bouton Réinitialiser : fond rouge, texte blanc */
             div[data-testid="stButton"] button[kind="secondary"] {
-                background-color: #ff4b4b;
-                color: white;
+                background-color: #ff4b4b !important;
+                color: white !important;
+                border: none !important;
             }
-            /* Popover Simulations disponibles : texte noir sur fond rouge */
-            div[data-testid="stPopover"] > button {
+            /* Bouton Comparer : fond bleu (primary par défaut) */
+            div[data-testid="stButton"] button[kind="primary"] {
+                background-color: #0066cc !important;
+                color: white !important;
+                border: none !important;
+            }
+            /* Popover Simulations disponibles : fond rouge, texte noir */
+            button[data-testid="stPopoverButton"] {
                 background-color: #ff4b4b !important;
                 color: black !important;
-                font-weight: bold;
+                font-weight: bold !important;
+                border: none !important;
             }
             </style>
             """, unsafe_allow_html=True)
@@ -609,7 +617,6 @@ elif selected_page == study_pages[0]:
     # --- TAB 2 : Résultats 3D avec menus par paramètre ---
     with tabs[2]:
         st.subheader(t("3d_viewer"))
-        st.info(t("3d_desc"))
 
         if not df_mapping.empty:
             # Zone de sélection des paramètres
