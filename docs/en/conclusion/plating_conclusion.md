@@ -16,7 +16,7 @@ The secondary current distribution approach implemented with Firedrake enables e
 
 | Parameter | Range Studied | Impact on CV% |
 |-----------|---------------|---------------|
-| CD (A/dm²) | 4 - 12 | Low direct impact |
+| CD (A/dm²) | 4 - 12 | **Strong impact** |
 | σ (S/m) | 10 - 40 | **Strong impact**: CV ↓ when σ ↑ |
 | j₀ (A/m²) | 0.34 - 1.36 | Moderate impact: CV ↓ when j₀ ↑ |
 | α | 0.4 - 0.6 | Low impact |
