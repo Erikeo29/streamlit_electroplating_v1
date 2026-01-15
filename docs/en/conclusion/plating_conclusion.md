@@ -47,22 +47,18 @@ The secondary current distribution approach implemented with Firedrake enables r
 
 ## 4. Development Perspectives
 
-### Short term (Study 2)
+### Physical Modeling
 - **Tertiary distribution**: Integration of mass transport (Nernst-Planck) to capture metal ion depletion at the surface, particularly critical for high CDs.
-- **Mesh sensitivity analysis**: Convergence study to optimize the accuracy/computation time trade-off.
+- **Multiphysics coupling**: Integration of thermal and hydrodynamic effects.
 
-### Medium term
+### Numerical and Meshing
+- **Mesh sensitivity analysis**: Convergence study to optimize the accuracy/computation time trade-off.
 - **Real 3D geometries**: Extension to complex industrial parts (connectors, PCBs).
-- **Time evolution**: Tracking deposit growth over time.
+
+### Time Evolution
+- **Dynamic tracking**: Tracking deposit growth over time.
 - **Experimental validation**: Comparison with profilometric measurements.
 
-### Long term
-- **Multiphysics coupling**: Integration of thermal and hydrodynamic effects.
+### Optimization
 - **Inverse optimization**: Automatic search for optimal parameters for a target uniformity.
 - **Machine Learning**: Rapid CV% prediction from input parameters.
-
----
-
-## Key References
-
-To deepen the concepts presented, refer to the **Bibliography** page which contains links to free resources (PDFs, videos, tutorials).

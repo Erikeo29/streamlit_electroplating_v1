@@ -23,7 +23,7 @@ TRANSLATIONS = {
         "sidebar_title": "Simulation d'électrodéposition",
         # Navigation groups
         "gen_header": "Général",
-        "gen_pages": ["Accueil", "Introduction"],
+        "gen_pages": ["Accueil", "Introduction", "Physique"],
         "study_header": "Études de modélisation",
         "study_pages": ["Étude 1 (Python + Firedrake)", "Étude 2 (À venir)"],
         "annex_header": "Annexes",
@@ -38,7 +38,7 @@ Jan 2026 - *EQU*
 - Code : format Jupyter (12 blocs)
 - Comparaison côte à côte (81 sims)""",
         # Tabs
-        "tabs_plating": ["Physique", "Code", "Résultats (2D)", "Résultats 3D"],
+        "tabs_plating": ["Code", "Résultats (2D)", "Résultats 3D"],
         # Cards
         "card_plating_title": "### Électrodéposition",
         "card_plating_text": "Simulation de dépôt électrolytique et distribution de courant secondaire.",
@@ -80,7 +80,7 @@ Jan 2026 - *EQU*
         "sidebar_title": "Electroplating Simulation",
         # Navigation groups
         "gen_header": "General",
-        "gen_pages": ["Home", "Introduction"],
+        "gen_pages": ["Home", "Introduction", "Physics"],
         "study_header": "Modeling Studies",
         "study_pages": ["Study 1 (Python + Firedrake)", "Study 2 (Coming Soon)"],
         "annex_header": "Appendices",
@@ -95,7 +95,7 @@ Jan 2026 - *EQU*
 - Code: Jupyter-style (12 blocks)
 - Side-by-side comparison (81 sims)""",
         # Tabs
-        "tabs_plating": ["Physics", "Code", "Results (2D)", "Results 3D"],
+        "tabs_plating": ["Code", "Results (2D)", "Results 3D"],
         # Cards
         "card_plating_title": "### Electroplating",
         "card_plating_text": "Simulation of electrolytic deposition and secondary current distribution.",
@@ -462,12 +462,14 @@ else:
 if selected_page == gen_pages[0]:
     st.title(t("title"))
     st.markdown(load_file_content("accueil/accueil.md"))
-    st.success(t("card_plating_title"))
-    st.write(t("card_plating_text"))
 
 # ===== PAGE INTRODUCTION (index 1 dans gen_pages) =====
 elif selected_page == gen_pages[1]:
     st.markdown(load_file_content("intro/intro_plating.md"))
+
+# ===== PAGE PHYSIQUE (index 2 dans gen_pages) =====
+elif selected_page == gen_pages[2]:
+    st.markdown(load_file_content("physics/plating_physics.md"))
 
 # ===== ÉTUDE 1 : Python + Firedrake (index 0 dans study_pages) =====
 elif selected_page == study_pages[0]:
@@ -497,35 +499,38 @@ elif selected_page == study_pages[0]:
             return matches.iloc[0]
         return None
 
-    # --- TAB 0 : Physique ---
+    # --- TAB 0 : Code ---
     with tabs[0]:
-        st.markdown(load_file_content("physics/plating_physics.md"))
-
-    # --- TAB 1 : Code ---
-    with tabs[1]:
         st.markdown(load_file_content("code/plating_code.md"))
 
-    # --- TAB 2 : Résultats (2D) avec menus par paramètre ---
-    with tabs[2]:
+    # --- TAB 1 : Résultats (2D) avec menus par paramètre ---
+    with tabs[1]:
         st.subheader(t("png_viewer"))
 
         if not df_mapping.empty:
             # CSS pour boutons colorés
             st.markdown("""
             <style>
+            /* Bouton Réinitialiser : rouge */
             div[data-testid="stButton"] button[kind="secondary"] {
                 background-color: #ff4b4b;
                 color: white;
+            }
+            /* Popover Simulations disponibles : texte noir sur fond rouge */
+            div[data-testid="stPopover"] > button {
+                background-color: #ff4b4b !important;
+                color: black !important;
+                font-weight: bold;
             }
             </style>
             """, unsafe_allow_html=True)
 
             # Zone de sélection des paramètres
             with st.container(border=True):
-                # Popover pour voir toutes les simulations (bouton rouge)
+                # Popover pour voir toutes les simulations (bouton rouge avec texte noir)
                 c_pop, _ = st.columns([0.3, 0.7])
                 with c_pop:
-                    with st.popover(f":red[**{t('lbl_avail_sims')}**]", use_container_width=True):
+                    with st.popover(t('lbl_avail_sims'), use_container_width=True):
                         st.dataframe(
                             df_mapping[['id', 'DDC_target_A_dm2', 'sigma_S_m', 'j0_A_m2', 'alpha', 'CV_percent', 'thickness_avg_um']],
                             use_container_width=True, hide_index=True
@@ -601,14 +606,23 @@ elif selected_page == study_pages[0]:
         else:
             st.info(t("placeholder_coming_soon"))
 
-    # --- TAB 3 : Résultats 3D avec menus par paramètre ---
-    with tabs[3]:
+    # --- TAB 2 : Résultats 3D avec menus par paramètre ---
+    with tabs[2]:
         st.subheader(t("3d_viewer"))
         st.info(t("3d_desc"))
 
         if not df_mapping.empty:
             # Zone de sélection des paramètres
             with st.container(border=True):
+                # Popover pour voir toutes les simulations (bouton rouge avec texte noir)
+                c_pop, _ = st.columns([0.3, 0.7])
+                with c_pop:
+                    with st.popover(t('lbl_avail_sims'), use_container_width=True):
+                        st.dataframe(
+                            df_mapping[['id', 'DDC_target_A_dm2', 'sigma_S_m', 'j0_A_m2', 'alpha', 'CV_percent', 'thickness_avg_um']],
+                            use_container_width=True, hide_index=True
+                        )
+
                 # Simulation 1 - 4 paramètres
                 lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
                 with lbl: st.markdown(f"**{t('sim_1')}**")
