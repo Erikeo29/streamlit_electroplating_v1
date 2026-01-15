@@ -29,14 +29,14 @@ TRANSLATIONS = {
         "annex_header": "Annexes",
         "annex_pages": ["Conclusion et Perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Bibliographie"],
         # Version info (NE PAS MODIFIER)
-        "version_info": """**Version 1.3.0**
+        "version_info": """**Version 1.4.0**
 Jan 2026 - *EQU*
 
 **Nouveautés :**
-- Bibliographie enrichie (liens gratuits)
-- Physique : équations détaillées
-- Code : format Jupyter (12 blocs)
-- Comparaison côte à côte (81 sims)""",
+- Étude DDC 5-10-15 A/dm² (243 sims)
+- Nouveau paramètre : temps de dépôt
+- Plages σ, j₀, α élargies
+- Comparaison côte à côte améliorée""",
         # Tabs
         "tabs_plating": ["Code", "Résultats (2D)", "Résultats 3D"],
         # Cards
@@ -57,6 +57,7 @@ Jan 2026 - *EQU*
         "lbl_sigma": "σ (S/m)",
         "lbl_j0": "j₀ (A/m²)",
         "lbl_alpha": "α",
+        "lbl_time": "Temps (s)",
         "lbl_avail_sims": "Simulations disponibles",
         "lbl_select_combo": "Sélectionner une combinaison",
         # Metrics
@@ -86,14 +87,14 @@ Jan 2026 - *EQU*
         "annex_header": "Appendices",
         "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliography"],
         # Version info (DO NOT MODIFY)
-        "version_info": """**Version 1.3.0**
+        "version_info": """**Version 1.4.0**
 Jan 2026 - *EQU*
 
 **What's New:**
-- Enhanced bibliography (free links)
-- Physics: detailed equations
-- Code: Jupyter-style (12 blocks)
-- Side-by-side comparison (81 sims)""",
+- DDC study 5-10-15 A/dm² (243 sims)
+- New parameter: deposition time
+- Extended σ, j₀, α ranges
+- Improved side-by-side comparison""",
         # Tabs
         "tabs_plating": ["Code", "Results (2D)", "Results 3D"],
         # Cards
@@ -114,6 +115,7 @@ Jan 2026 - *EQU*
         "lbl_sigma": "σ (S/m)",
         "lbl_j0": "j₀ (A/m²)",
         "lbl_alpha": "α",
+        "lbl_time": "Time (s)",
         "lbl_avail_sims": "Available Simulations",
         "lbl_select_combo": "Select a combination",
         # Metrics
@@ -480,19 +482,21 @@ elif selected_page == study_pages[0]:
     # Charger le mapping des simulations
     df_mapping = load_ed_mapping()
 
-    # Valeurs disponibles pour les sélecteurs
-    ddc_values = [4.0, 8.0, 12.0]
-    sigma_values = [10.0, 25.0, 40.0]
-    j0_values = [0.34, 0.68, 1.36]
-    alpha_values = [0.4, 0.5, 0.6]
+    # Valeurs disponibles pour les sélecteurs (étude DDC 5-10-15)
+    ddc_values = [5.0, 10.0, 15.0]
+    sigma_values = [10.0, 30.0, 50.0]
+    j0_values = [0.30, 0.70, 1.10]
+    alpha_values = [0.25, 0.50, 0.75]
+    time_values = [30.0, 60.0, 90.0]
 
-    def get_simulation_by_params(df, ddc, sigma, j0, alpha):
+    def get_simulation_by_params(df, ddc, sigma, j0, alpha, time_s):
         """Trouve une simulation par ses paramètres."""
         mask = (
             (df['DDC_target_A_dm2'] == ddc) &
             (df['sigma_S_m'] == sigma) &
             (df['j0_A_m2'] == j0) &
-            (df['alpha'] == alpha)
+            (df['alpha'] == alpha) &
+            (df['time_s'] == time_s)
         )
         matches = df[mask]
         if len(matches) > 0:
@@ -540,25 +544,27 @@ elif selected_page == study_pages[0]:
                 with c_pop:
                     with st.popover(t('lbl_avail_sims'), use_container_width=True):
                         st.dataframe(
-                            df_mapping[['id', 'DDC_target_A_dm2', 'sigma_S_m', 'j0_A_m2', 'alpha', 'CV_percent', 'thickness_avg_um']],
+                            df_mapping[['id', 'DDC_target_A_dm2', 'sigma_S_m', 'j0_A_m2', 'alpha', 'time_s', 'CV_percent', 'thickness_avg_um']],
                             use_container_width=True, hide_index=True
                         )
 
-                # Simulation 1 - 4 paramètres
-                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                # Simulation 1 - 5 paramètres
+                lbl, c1, c2, c3, c4, c5 = st.columns([1.0, 1, 1, 1, 1, 1])
                 with lbl: st.markdown(f"**{t('sim_1')}**")
                 with c1: s1_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s1_ddc")
                 with c2: s1_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s1_sigma")
                 with c3: s1_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s1_j0")
                 with c4: s1_alpha = st.selectbox(t("lbl_alpha"), alpha_values, key="png_s1_alpha")
+                with c5: s1_time = st.selectbox(t("lbl_time"), time_values, key="png_s1_time")
 
-                # Simulation 2 - 4 paramètres
-                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                # Simulation 2 - 5 paramètres
+                lbl, c1, c2, c3, c4, c5 = st.columns([1.0, 1, 1, 1, 1, 1])
                 with lbl: st.markdown(f"**{t('sim_2')}**")
                 with c1: s2_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s2_ddc", index=1)
                 with c2: s2_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s2_sigma", index=1)
                 with c3: s2_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s2_j0", index=1)
                 with c4: s2_alpha = st.selectbox(t("lbl_alpha"), alpha_values, key="png_s2_alpha", index=1)
+                with c5: s2_time = st.selectbox(t("lbl_time"), time_values, key="png_s2_time", index=1)
 
                 # Boutons : Comparer (bleu) et Réinitialiser (rouge)
                 _, btn_col, rst_col, _ = st.columns([1, 1, 1, 1])
@@ -573,8 +579,8 @@ elif selected_page == study_pages[0]:
             if btn_png or st.session_state.get('show_png', False):
                 st.session_state.show_png = True
 
-                sim1 = get_simulation_by_params(df_mapping, s1_ddc, s1_sigma, s1_j0, s1_alpha)
-                sim2 = get_simulation_by_params(df_mapping, s2_ddc, s2_sigma, s2_j0, s2_alpha)
+                sim1 = get_simulation_by_params(df_mapping, s1_ddc, s1_sigma, s1_j0, s1_alpha, s1_time)
+                sim2 = get_simulation_by_params(df_mapping, s2_ddc, s2_sigma, s2_j0, s2_alpha, s2_time)
                 files1 = get_simulation_files(sim1)
                 files2 = get_simulation_files(sim2)
 
@@ -626,25 +632,27 @@ elif selected_page == study_pages[0]:
                 with c_pop:
                     with st.popover(t('lbl_avail_sims'), use_container_width=True):
                         st.dataframe(
-                            df_mapping[['id', 'DDC_target_A_dm2', 'sigma_S_m', 'j0_A_m2', 'alpha', 'CV_percent', 'thickness_avg_um']],
+                            df_mapping[['id', 'DDC_target_A_dm2', 'sigma_S_m', 'j0_A_m2', 'alpha', 'time_s', 'CV_percent', 'thickness_avg_um']],
                             use_container_width=True, hide_index=True
                         )
 
-                # Simulation 1 - 4 paramètres
-                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                # Simulation 1 - 5 paramètres
+                lbl, c1, c2, c3, c4, c5 = st.columns([1.0, 1, 1, 1, 1, 1])
                 with lbl: st.markdown(f"**{t('sim_1')}**")
                 with c1: s1_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s1_ddc")
                 with c2: s1_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s1_sigma")
                 with c3: s1_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s1_j0")
                 with c4: s1_alpha_3d = st.selectbox(t("lbl_alpha"), alpha_values, key="3d_s1_alpha")
+                with c5: s1_time_3d = st.selectbox(t("lbl_time"), time_values, key="3d_s1_time")
 
-                # Simulation 2 - 4 paramètres
-                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                # Simulation 2 - 5 paramètres
+                lbl, c1, c2, c3, c4, c5 = st.columns([1.0, 1, 1, 1, 1, 1])
                 with lbl: st.markdown(f"**{t('sim_2')}**")
                 with c1: s2_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s2_ddc", index=1)
                 with c2: s2_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s2_sigma", index=1)
                 with c3: s2_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s2_j0", index=1)
                 with c4: s2_alpha_3d = st.selectbox(t("lbl_alpha"), alpha_values, key="3d_s2_alpha", index=1)
+                with c5: s2_time_3d = st.selectbox(t("lbl_time"), time_values, key="3d_s2_time", index=1)
 
                 # Boutons : Comparer (bleu) et Réinitialiser (rouge)
                 _, btn_col, rst_col, _ = st.columns([1, 1, 1, 1])
@@ -659,8 +667,8 @@ elif selected_page == study_pages[0]:
             if btn_3d or st.session_state.get('show_3d', False):
                 st.session_state.show_3d = True
 
-                sim1_3d = get_simulation_by_params(df_mapping, s1_ddc_3d, s1_sigma_3d, s1_j0_3d, s1_alpha_3d)
-                sim2_3d = get_simulation_by_params(df_mapping, s2_ddc_3d, s2_sigma_3d, s2_j0_3d, s2_alpha_3d)
+                sim1_3d = get_simulation_by_params(df_mapping, s1_ddc_3d, s1_sigma_3d, s1_j0_3d, s1_alpha_3d, s1_time_3d)
+                sim2_3d = get_simulation_by_params(df_mapping, s2_ddc_3d, s2_sigma_3d, s2_j0_3d, s2_alpha_3d, s2_time_3d)
                 files1_3d = get_simulation_files(sim1_3d)
                 files2_3d = get_simulation_files(sim2_3d)
 
