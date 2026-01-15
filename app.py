@@ -20,12 +20,12 @@ STUDY_RESULTS_PATH = os.path.join(ASSETS_PATH, "plating/study_results")
 TRANSLATIONS = {
     "fr": {
         "title": "Plateforme de Simulation d'Électrodéposition",
-        "sidebar_title": "Simulation",
+        "sidebar_title": "Simulation d'électrodéposition",
         # Navigation groups
         "gen_header": "Général",
         "gen_pages": ["Accueil", "Introduction"],
         "study_header": "Études de modélisation",
-        "study_pages": ["Étude 1 (Firedrake)", "Étude 2 (À venir)"],
+        "study_pages": ["Étude 1 (Python + Firedrake)", "Étude 2 (À venir)"],
         "annex_header": "Annexes",
         "annex_pages": ["Conclusion et Perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Bibliographie"],
         # Version info (NE PAS MODIFIER)
@@ -57,14 +57,14 @@ Jan 2026 - *EQU*
         "lbl_sigma": "σ (S/m)",
         "lbl_j0": "j₀ (A/m²)",
         "lbl_alpha": "α",
-        "lbl_avail_sims": "📋 Simulations disponibles",
+        "lbl_avail_sims": "Simulations disponibles",
         "lbl_select_combo": "Sélectionner une combinaison",
         # Metrics
         "thickness_map": "Carte d'épaisseur",
         "current_density": "Densité de courant",
         "view_3d_iso": "Vue 3D isométrique",
         # Studies
-        "title_study_1": "Étude 1 : Distribution de courant secondaire (Firedrake)",
+        "title_study_1": "Étude 1 : Distribution de courant secondaire (Python + Firedrake)",
         "title_study_2": "Étude 2 : À venir",
         "placeholder_coming_soon": "Étude à venir - Contenu en cours de préparation",
         # Chatbot
@@ -77,12 +77,12 @@ Jan 2026 - *EQU*
     },
     "en": {
         "title": "Electroplating Simulation Platform",
-        "sidebar_title": "Simulation",
+        "sidebar_title": "Electroplating Simulation",
         # Navigation groups
         "gen_header": "General",
         "gen_pages": ["Home", "Introduction"],
         "study_header": "Modeling Studies",
-        "study_pages": ["Study 1 (Firedrake)", "Study 2 (Coming Soon)"],
+        "study_pages": ["Study 1 (Python + Firedrake)", "Study 2 (Coming Soon)"],
         "annex_header": "Appendices",
         "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliography"],
         # Version info (DO NOT MODIFY)
@@ -114,14 +114,14 @@ Jan 2026 - *EQU*
         "lbl_sigma": "σ (S/m)",
         "lbl_j0": "j₀ (A/m²)",
         "lbl_alpha": "α",
-        "lbl_avail_sims": "📋 Available Simulations",
+        "lbl_avail_sims": "Available Simulations",
         "lbl_select_combo": "Select a combination",
         # Metrics
         "thickness_map": "Thickness Map",
         "current_density": "Current Density",
         "view_3d_iso": "3D Isometric View",
         # Studies
-        "title_study_1": "Study 1: Secondary Current Distribution (Firedrake)",
+        "title_study_1": "Study 1: Secondary Current Distribution (Python + Firedrake)",
         "title_study_2": "Study 2: Coming Soon",
         "placeholder_coming_soon": "Coming Soon - Content under preparation",
         # Chatbot
@@ -392,31 +392,6 @@ nav_gen = st.sidebar.radio(
     label_visibility="collapsed"
 )
 
-# --- Chatbot dans la Sidebar (toujours visible) ---
-st.sidebar.markdown("---")
-with st.sidebar.popover(t("chat_title"), use_container_width=True):
-    if is_chatbot_enabled():
-        if st.button(t("chat_clear"), use_container_width=True):
-            st.session_state.chat_messages = []
-            st.rerun()
-
-        st.markdown("---")
-
-        if not st.session_state.chat_messages:
-            st.info(t("chat_welcome"))
-
-        for msg in st.session_state.chat_messages:
-            with st.chat_message(msg["role"]):
-                st.markdown(msg["content"])
-
-        if prompt := st.chat_input(t("chat_placeholder")):
-            with st.chat_message("user"):
-                st.markdown(prompt)
-            with st.chat_message("assistant"):
-                st.write_stream(stream_groq_response(prompt))
-    else:
-        st.warning(t("chat_api_missing"))
-
 # --- Navigation Groupe 2 : Études ---
 st.sidebar.markdown("---")
 st.sidebar.subheader(t("study_header"))
@@ -440,6 +415,31 @@ nav_annex = st.sidebar.radio(
     on_change=on_change_annex,
     label_visibility="collapsed"
 )
+
+# --- Chatbot dans la Sidebar (entre Annexes et Version) ---
+st.sidebar.markdown("---")
+with st.sidebar.popover(t("chat_title"), use_container_width=True):
+    if is_chatbot_enabled():
+        if st.button(t("chat_clear"), use_container_width=True):
+            st.session_state.chat_messages = []
+            st.rerun()
+
+        st.markdown("---")
+
+        if not st.session_state.chat_messages:
+            st.info(t("chat_welcome"))
+
+        for msg in st.session_state.chat_messages:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+
+        if prompt := st.chat_input(t("chat_placeholder")):
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            with st.chat_message("assistant"):
+                st.write_stream(stream_groq_response(prompt))
+    else:
+        st.warning(t("chat_api_missing"))
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
@@ -469,7 +469,7 @@ if selected_page == gen_pages[0]:
 elif selected_page == gen_pages[1]:
     st.markdown(load_file_content("intro/intro_plating.md"))
 
-# ===== ÉTUDE 1 : Firedrake (index 0 dans study_pages) =====
+# ===== ÉTUDE 1 : Python + Firedrake (index 0 dans study_pages) =====
 elif selected_page == study_pages[0]:
     st.title(t("title_study_1"))
 
@@ -478,11 +478,24 @@ elif selected_page == study_pages[0]:
     # Charger le mapping des simulations
     df_mapping = load_ed_mapping()
 
-    # Préparer les combinaisons pour le menu déroulant
-    if not df_mapping.empty:
-        combos = get_available_combinations(df_mapping)
-        combo_labels = [c[0] for c in combos]
-        combo_data = {c[0]: c[1] for c in combos}
+    # Valeurs disponibles pour les sélecteurs
+    ddc_values = [4.0, 8.0, 12.0]
+    sigma_values = [10.0, 25.0, 40.0]
+    j0_values = [0.34, 0.68, 1.36]
+    alpha_values = [0.4, 0.5, 0.6]
+
+    def get_simulation_by_params(df, ddc, sigma, j0, alpha):
+        """Trouve une simulation par ses paramètres."""
+        mask = (
+            (df['DDC_target_A_dm2'] == ddc) &
+            (df['sigma_S_m'] == sigma) &
+            (df['j0_A_m2'] == j0) &
+            (df['alpha'] == alpha)
+        )
+        matches = df[mask]
+        if len(matches) > 0:
+            return matches.iloc[0]
+        return None
 
     # --- TAB 0 : Physique ---
     with tabs[0]:
@@ -492,39 +505,49 @@ elif selected_page == study_pages[0]:
     with tabs[1]:
         st.markdown(load_file_content("code/plating_code.md"))
 
-    # --- TAB 2 : Résultats (2D) avec menu déroulant ---
+    # --- TAB 2 : Résultats (2D) avec menus par paramètre ---
     with tabs[2]:
         st.subheader(t("png_viewer"))
 
         if not df_mapping.empty:
-            # Zone de sélection avec menus déroulants
+            # CSS pour boutons colorés
+            st.markdown("""
+            <style>
+            div[data-testid="stButton"] button[kind="secondary"] {
+                background-color: #ff4b4b;
+                color: white;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
+            # Zone de sélection des paramètres
             with st.container(border=True):
-                # Popover pour voir toutes les simulations
+                # Popover pour voir toutes les simulations (bouton rouge)
                 c_pop, _ = st.columns([0.3, 0.7])
                 with c_pop:
-                    with st.popover(t("lbl_avail_sims"), use_container_width=True):
+                    with st.popover(f":red[**{t('lbl_avail_sims')}**]", use_container_width=True):
                         st.dataframe(
                             df_mapping[['id', 'DDC_target_A_dm2', 'sigma_S_m', 'j0_A_m2', 'alpha', 'CV_percent', 'thickness_avg_um']],
                             use_container_width=True, hide_index=True
                         )
 
-                st.markdown(f"**{t('sim_1')}**")
-                s1_combo = st.selectbox(
-                    t("lbl_select_combo"),
-                    combo_labels,
-                    key="png_s1_combo",
-                    label_visibility="collapsed"
-                )
+                # Simulation 1 - 4 paramètres
+                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                with lbl: st.markdown(f"**{t('sim_1')}**")
+                with c1: s1_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s1_ddc")
+                with c2: s1_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s1_sigma")
+                with c3: s1_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s1_j0")
+                with c4: s1_alpha = st.selectbox(t("lbl_alpha"), alpha_values, key="png_s1_alpha")
 
-                st.markdown(f"**{t('sim_2')}**")
-                s2_combo = st.selectbox(
-                    t("lbl_select_combo"),
-                    combo_labels,
-                    key="png_s2_combo",
-                    index=min(1, len(combo_labels) - 1),
-                    label_visibility="collapsed"
-                )
+                # Simulation 2 - 4 paramètres
+                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                with lbl: st.markdown(f"**{t('sim_2')}**")
+                with c1: s2_ddc = st.selectbox(t("lbl_ddc"), ddc_values, key="png_s2_ddc", index=1)
+                with c2: s2_sigma = st.selectbox(t("lbl_sigma"), sigma_values, key="png_s2_sigma", index=1)
+                with c3: s2_j0 = st.selectbox(t("lbl_j0"), j0_values, key="png_s2_j0", index=1)
+                with c4: s2_alpha = st.selectbox(t("lbl_alpha"), alpha_values, key="png_s2_alpha", index=1)
 
+                # Boutons : Comparer (bleu) et Réinitialiser (rouge)
                 _, btn_col, rst_col, _ = st.columns([1, 1, 1, 1])
                 with btn_col:
                     btn_png = st.button(t("btn_compare"), type="primary", use_container_width=True, key="btn_png")
@@ -537,8 +560,8 @@ elif selected_page == study_pages[0]:
             if btn_png or st.session_state.get('show_png', False):
                 st.session_state.show_png = True
 
-                sim1 = combo_data.get(s1_combo)
-                sim2 = combo_data.get(s2_combo)
+                sim1 = get_simulation_by_params(df_mapping, s1_ddc, s1_sigma, s1_j0, s1_alpha)
+                sim2 = get_simulation_by_params(df_mapping, s2_ddc, s2_sigma, s2_j0, s2_alpha)
                 files1 = get_simulation_files(sim1)
                 files2 = get_simulation_files(sim2)
 
@@ -578,31 +601,31 @@ elif selected_page == study_pages[0]:
         else:
             st.info(t("placeholder_coming_soon"))
 
-    # --- TAB 3 : Résultats 3D avec menu déroulant ---
+    # --- TAB 3 : Résultats 3D avec menus par paramètre ---
     with tabs[3]:
         st.subheader(t("3d_viewer"))
         st.info(t("3d_desc"))
 
         if not df_mapping.empty:
-            # Zone de sélection avec menus déroulants
+            # Zone de sélection des paramètres
             with st.container(border=True):
-                st.markdown(f"**{t('sim_1')}**")
-                s1_combo_3d = st.selectbox(
-                    t("lbl_select_combo"),
-                    combo_labels,
-                    key="3d_s1_combo",
-                    label_visibility="collapsed"
-                )
+                # Simulation 1 - 4 paramètres
+                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                with lbl: st.markdown(f"**{t('sim_1')}**")
+                with c1: s1_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s1_ddc")
+                with c2: s1_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s1_sigma")
+                with c3: s1_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s1_j0")
+                with c4: s1_alpha_3d = st.selectbox(t("lbl_alpha"), alpha_values, key="3d_s1_alpha")
 
-                st.markdown(f"**{t('sim_2')}**")
-                s2_combo_3d = st.selectbox(
-                    t("lbl_select_combo"),
-                    combo_labels,
-                    key="3d_s2_combo",
-                    index=min(1, len(combo_labels) - 1),
-                    label_visibility="collapsed"
-                )
+                # Simulation 2 - 4 paramètres
+                lbl, c1, c2, c3, c4 = st.columns([1.2, 1, 1, 1, 1])
+                with lbl: st.markdown(f"**{t('sim_2')}**")
+                with c1: s2_ddc_3d = st.selectbox(t("lbl_ddc"), ddc_values, key="3d_s2_ddc", index=1)
+                with c2: s2_sigma_3d = st.selectbox(t("lbl_sigma"), sigma_values, key="3d_s2_sigma", index=1)
+                with c3: s2_j0_3d = st.selectbox(t("lbl_j0"), j0_values, key="3d_s2_j0", index=1)
+                with c4: s2_alpha_3d = st.selectbox(t("lbl_alpha"), alpha_values, key="3d_s2_alpha", index=1)
 
+                # Boutons : Comparer (bleu) et Réinitialiser (rouge)
                 _, btn_col, rst_col, _ = st.columns([1, 1, 1, 1])
                 with btn_col:
                     btn_3d = st.button(t("btn_compare"), type="primary", use_container_width=True, key="btn_3d")
@@ -615,8 +638,8 @@ elif selected_page == study_pages[0]:
             if btn_3d or st.session_state.get('show_3d', False):
                 st.session_state.show_3d = True
 
-                sim1_3d = combo_data.get(s1_combo_3d)
-                sim2_3d = combo_data.get(s2_combo_3d)
+                sim1_3d = get_simulation_by_params(df_mapping, s1_ddc_3d, s1_sigma_3d, s1_j0_3d, s1_alpha_3d)
+                sim2_3d = get_simulation_by_params(df_mapping, s2_ddc_3d, s2_sigma_3d, s2_j0_3d, s2_alpha_3d)
                 files1_3d = get_simulation_files(sim1_3d)
                 files2_3d = get_simulation_files(sim2_3d)
 

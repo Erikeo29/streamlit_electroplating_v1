@@ -1,3 +1,10 @@
+# Bibliography
+
+**Table of Contents:**
+1. Reference Books
+2. Free Courses and Tutorials
+3. Additional Resources
+
 This section gathers reference books and open-access technical resources.
 
 ---

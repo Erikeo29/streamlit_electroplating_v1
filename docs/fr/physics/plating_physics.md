@@ -1,3 +1,12 @@
+# Physique : Distribution de Courant Secondaire
+
+**Sommaire :**
+1. Distribution Secondaire de Courant
+2. Cinétique Butler-Volmer
+3. Loi de Faraday (Épaisseur du dépôt)
+4. Résultats de Simulation
+5. Algorithme Galvanostatique (Recherche de DDC)
+
 Ce module simule la croissance d'une couche de Nickel sur un substrat complexe en mode galvanostatique.
 
 ---
@@ -42,7 +51,35 @@ $$\eta_{safe} = \text{clip}(\eta, -\eta_{max}, +\eta_{max})$$ avec $\eta_{max} =
 
 ---
 
-## 3. Algorithme Galvanostatique (Recherche de DDC)
+## 3. Loi de Faraday (Épaisseur du dépôt)
+
+L'épaisseur locale du dépôt $h$ après un temps $t_{dep}$ :
+
+$$h = \frac{|j| \cdot M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho}$$
+
+Où :
+| Symbole | Description | Valeur |
+|---------|-------------|--------|
+| $M$ | Masse molaire Ni | 58.69 g/mol |
+| $\rho$ | Masse volumique Ni | 8908 kg/m³ |
+| $\varepsilon$ | Efficacité cathodique | ~0.98 |
+| $t_{dep}$ | Temps de déposition | 300 s (étude) |
+
+**Facteur de Faraday simplifié** :
+$$\text{faraday\_factor} = \frac{M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho} \times 10^6 \quad [\mu m / (A/m^2)]$$
+
+---
+
+## 4. Résultats de Simulation
+
+- **Carte d'épaisseur** : Visualisation 3D (exportable en VTK) de l'épaisseur déposée
+- **Carte de densité de courant** : Distribution spatiale de $j$ sur la cathode
+- **Histogramme** : Analyse statistique de la répartition du métal
+- **Vue 3D interactive** : Export HTML via PyVista
+
+---
+
+## 5. Algorithme Galvanostatique (Recherche de DDC)
 
 En mode galvanostatique, on impose la **DDC cible** (Densité de Courant nominale) et le code recherche le potentiel d'anode correspondant par **bissection**.
 
@@ -68,47 +105,3 @@ En mode galvanostatique, on impose la **DDC cible** (Densité de Courant nominal
 | Max iterations | 30 | Nombre maximal de bissections |
 | Solveur | Newton-Raphson (SNES) | Pour le problème non-linéaire |
 | Préconditionneur | ILU | Incomplete LU factorization |
-
----
-
-## 4. Loi de Faraday (Épaisseur du dépôt)
-
-L'épaisseur locale du dépôt $h$ après un temps $t_{dep}$ :
-
-$$h = \frac{|j| \cdot M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho}$$
-
-Où :
-| Symbole | Description | Valeur |
-|---------|-------------|--------|
-| $M$ | Masse molaire Ni | 58.69 g/mol |
-| $\rho$ | Masse volumique Ni | 8908 kg/m³ |
-| $\varepsilon$ | Efficacité cathodique | ~0.98 |
-| $t_{dep}$ | Temps de déposition | 300 s (étude) |
-
-**Facteur de Faraday simplifié** :
-$$\text{faraday\_factor} = \frac{M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho} \times 10^6 \quad [\mu m / (A/m^2)]$$
-
----
-
-## 5. Métriques d'Uniformité
-
-### Coefficient de Variation (CV)
-$$CV = \frac{\sigma_h}{\bar{h}} \times 100\%$$
-
-Où $\sigma_h$ est l'écart-type et $\bar{h}$ la moyenne de l'épaisseur.
-
-| CV | Interprétation |
-|----|----------------|
-| < 5% | Excellent |
-| 5-10% | Bon |
-| 10-20% | Acceptable |
-| > 20% | À optimiser |
-
----
-
-## 6. Résultats de Simulation
-
-- **Carte d'épaisseur** : Visualisation 3D (exportable en VTK) de l'épaisseur déposée
-- **Carte de densité de courant** : Distribution spatiale de $j$ sur la cathode
-- **Histogramme** : Analyse statistique de la répartition du métal
-- **Vue 3D interactive** : Export HTML via PyVista

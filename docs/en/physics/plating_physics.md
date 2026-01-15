@@ -1,3 +1,12 @@
+# Physics: Secondary Current Distribution
+
+**Table of Contents:**
+1. Secondary Current Distribution
+2. Butler-Volmer Kinetics
+3. Faraday's Law (Deposit Thickness)
+4. Simulation Results
+5. Galvanostatic Algorithm (DDC Search)
+
 This module simulates Nickel layer growth on a complex substrate in galvanostatic mode.
 
 ---
@@ -42,7 +51,35 @@ $$\eta_{safe} = \text{clip}(\eta, -\eta_{max}, +\eta_{max})$$ with $\eta_{max} =
 
 ---
 
-## 3. Galvanostatic Algorithm (DDC Search)
+## 3. Faraday's Law (Deposit Thickness)
+
+Local deposit thickness $h$ after time $t_{dep}$:
+
+$$h = \frac{|j| \cdot M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho}$$
+
+Where:
+| Symbol | Description | Value |
+|--------|-------------|-------|
+| $M$ | Ni molar mass | 58.69 g/mol |
+| $\rho$ | Ni density | 8908 kg/m³ |
+| $\varepsilon$ | Cathodic efficiency | ~0.98 |
+| $t_{dep}$ | Deposition time | 300 s (study) |
+
+**Simplified Faraday factor**:
+$$\text{faraday\_factor} = \frac{M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho} \times 10^6 \quad [\mu m / (A/m^2)]$$
+
+---
+
+## 4. Simulation Results
+
+- **Thickness map**: 3D visualization (VTK exportable) of deposited thickness
+- **Current density map**: Spatial distribution of $j$ on cathode
+- **Histogram**: Statistical analysis of metal distribution
+- **Interactive 3D view**: HTML export via PyVista
+
+---
+
+## 5. Galvanostatic Algorithm (DDC Search)
 
 In galvanostatic mode, the **target DDC** (nominal Current Density) is imposed and the code searches for the corresponding anode potential using **bisection**.
 
@@ -68,47 +105,3 @@ In galvanostatic mode, the **target DDC** (nominal Current Density) is imposed a
 | Max iterations | 30 | Maximum bisection steps |
 | Solver | Newton-Raphson (SNES) | For nonlinear problem |
 | Preconditioner | ILU | Incomplete LU factorization |
-
----
-
-## 4. Faraday's Law (Deposit Thickness)
-
-Local deposit thickness $h$ after time $t_{dep}$:
-
-$$h = \frac{|j| \cdot M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho}$$
-
-Where:
-| Symbol | Description | Value |
-|--------|-------------|-------|
-| $M$ | Ni molar mass | 58.69 g/mol |
-| $\rho$ | Ni density | 8908 kg/m³ |
-| $\varepsilon$ | Cathodic efficiency | ~0.98 |
-| $t_{dep}$ | Deposition time | 300 s (study) |
-
-**Simplified Faraday factor**:
-$$\text{faraday\_factor} = \frac{M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \cdot \rho} \times 10^6 \quad [\mu m / (A/m^2)]$$
-
----
-
-## 5. Uniformity Metrics
-
-### Coefficient of Variation (CV)
-$$CV = \frac{\sigma_h}{\bar{h}} \times 100\%$$
-
-Where $\sigma_h$ is the standard deviation and $\bar{h}$ the mean thickness.
-
-| CV | Interpretation |
-|----|----------------|
-| < 5% | Excellent |
-| 5-10% | Good |
-| 10-20% | Acceptable |
-| > 20% | Needs optimization |
-
----
-
-## 6. Simulation Results
-
-- **Thickness map**: 3D visualization (VTK exportable) of deposited thickness
-- **Current density map**: Spatial distribution of $j$ on cathode
-- **Histogram**: Statistical analysis of metal distribution
-- **Interactive 3D view**: HTML export via PyVista
