@@ -503,35 +503,36 @@ elif selected_page == study_pages[0]:
     with tabs[0]:
         st.markdown(load_file_content("code/plating_code.md"))
 
+    # CSS global pour boutons colorés (appliqué une seule fois)
+    st.markdown("""
+    <style>
+    /* Bouton Réinitialiser : fond rouge, texte blanc */
+    div[data-testid="stButton"] button[kind="secondary"] {
+        background-color: #ff4b4b !important;
+        color: white !important;
+        border: none !important;
+    }
+    /* Bouton Comparer : fond bleu (primary par défaut) */
+    div[data-testid="stButton"] button[kind="primary"] {
+        background-color: #0066cc !important;
+        color: white !important;
+        border: none !important;
+    }
+    /* Popover Simulations disponibles : fond rouge, texte blanc */
+    button[data-testid="stPopoverButton"] {
+        background-color: #ff4b4b !important;
+        color: white !important;
+        font-weight: bold !important;
+        border: none !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     # --- TAB 1 : Résultats (2D) avec menus par paramètre ---
     with tabs[1]:
         st.subheader(t("png_viewer"))
-        if not df_mapping.empty:
-            # CSS pour boutons colorés
-            st.markdown("""
-            <style>
-            /* Bouton Réinitialiser : fond rouge, texte blanc */
-            div[data-testid="stButton"] button[kind="secondary"] {
-                background-color: #ff4b4b !important;
-                color: white !important;
-                border: none !important;
-            }
-            /* Bouton Comparer : fond bleu (primary par défaut) */
-            div[data-testid="stButton"] button[kind="primary"] {
-                background-color: #0066cc !important;
-                color: white !important;
-                border: none !important;
-            }
-            /* Popover Simulations disponibles : fond rouge, texte blanc */
-            button[data-testid="stPopoverButton"] {
-                background-color: #ff4b4b !important;
-                color: white !important;
-                font-weight: bold !important;
-                border: none !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
 
+        if not df_mapping.empty:
             # Zone de sélection des paramètres
             with st.container(border=True):
                 # Popover pour voir toutes les simulations (bouton rouge avec texte noir)

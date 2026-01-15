@@ -16,7 +16,7 @@ L'approche de distribution de courant secondaire implémentée avec Firedrake pe
 
 | Paramètre | Plage étudiée | Impact sur CV% |
 |-----------|---------------|----------------|
-| DDC (A/dm²) | 4 - 12 | Faible impact direct |
+| DDC (A/dm²) | 4 - 12 | **Fort impact** |
 | σ (S/m) | 10 - 40 | **Fort impact** : CV ↓ quand σ ↑ |
 | j₀ (A/m²) | 0.34 - 1.36 | Impact modéré : CV ↓ quand j₀ ↑ |
 | α | 0.4 - 0.6 | Impact faible |

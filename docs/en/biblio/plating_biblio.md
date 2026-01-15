@@ -2,8 +2,7 @@
 
 **Table of Contents:**
 1. Butler-Volmer Kinetics
-2. Nickel Electrodeposition
-3. Simulation Tools
+2. Simulation Tools
 
 This section gathers open-access technical resources.
 
@@ -28,23 +27,7 @@ This section gathers open-access technical resources.
 
 ---
 
-## 2. Nickel Electrodeposition
-
-> **Zellele, D. M.; Yar-Mukhamedova, G. Sh.; Rutkowska-Gorczyca, M.**
-> *"A Review on Properties of Electrodeposited Nickel Composite Coatings"*
-> Materials, Vol. 17, Issue 23, Article 5715, **2024**.
-> Comprehensive review on nickel electrodeposition and composites.
-> [DOI: 10.3390/ma17235715 (Open Access)](https://doi.org/10.3390/ma17235715)
-
-> **Mahapatro, A.; Kumar Suggu, S.**
-> *"Modeling and simulation of electrodeposition: Effect of electrolyte current density and conductivity on electroplating thickness"*
-> Adv. Mater. Sci., **2018**.
-> FEM modeling of thickness distribution.
-> [PDF (Open Access)](https://www.oatext.com/pdf/AMS-3-143.pdf)
-
----
-
-## 3. Simulation Tools
+## 2. Simulation Tools
 
 > **EchemFEM - LLNL**
 > *"Finite Element Methods for Electrochemistry"*

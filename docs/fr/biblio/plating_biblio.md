@@ -2,8 +2,7 @@
 
 **Sommaire :**
 1. Cinétique Butler-Volmer
-2. Électrodéposition du Nickel
-3. Outils de Simulation
+2. Outils de Simulation
 
 Cette section regroupe des ressources techniques en accès libre.
 
@@ -28,23 +27,7 @@ Cette section regroupe des ressources techniques en accès libre.
 
 ---
 
-## 2. Électrodéposition du Nickel
-
-> **Zellele, D. M.; Yar-Mukhamedova, G. Sh.; Rutkowska-Gorczyca, M.**
-> *"A Review on Properties of Electrodeposited Nickel Composite Coatings"*
-> Materials, Vol. 17, Issue 23, Article 5715, **2024**.
-> Revue complète sur l'électrodéposition du nickel et ses composites.
-> [DOI: 10.3390/ma17235715 (Open Access)](https://doi.org/10.3390/ma17235715)
-
-> **Mahapatro, A.; Kumar Suggu, S.**
-> *"Modeling and simulation of electrodeposition: Effect of electrolyte current density and conductivity on electroplating thickness"*
-> Adv. Mater. Sci., **2018**.
-> Modélisation FEM de la distribution d'épaisseur.
-> [PDF (Open Access)](https://www.oatext.com/pdf/AMS-3-143.pdf)
-
----
-
-## 3. Outils de Simulation
+## 2. Outils de Simulation
 
 > **EchemFEM - LLNL**
 > *"Finite Element Methods for Electrochemistry"*
