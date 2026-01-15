@@ -1,38 +1,20 @@
 # Bibliography
 
 **Table of Contents:**
-1. Reference Books
-2. Free Courses and Tutorials
-3. Additional Resources
+1. Butler-Volmer Kinetics
+2. Nickel Electrodeposition
+3. Simulation Tools
 
-This section gathers reference books and open-access technical resources.
-
----
-
-## 1. Reference Books
-
-> **Newman, J.; Thomas-Alyea, K. E.**
-> *"Electrochemical Systems"*, 3rd Edition.
-> Wiley-Interscience, **2004**.
-> The bible of modern electrochemistry. Key chapters: 8 (Transport), 11 (Electrode Kinetics).
-> [Internet Archive (Free borrowing)](https://archive.org/details/electrochemicals003newm)
-
-> **Bard, A. J.; Faulkner, L. R.**
-> *"Electrochemical Methods"*, 2nd Edition.
-> Wiley, **2001**.
-> Theoretical fundamentals of analytical electrochemistry.
+This section gathers open-access technical resources.
 
 ---
 
-## 2. Free Courses and Tutorials
+## 1. Butler-Volmer Kinetics
 
-### Butler-Volmer Kinetics
 > **MIT OpenCourseWare - Course 10.626**
-> *"Lecture 13: Butler-Volmer Equation"*
-> Prof. Martin Bazant - Electrochemical Energy Systems.
-> Complete derivation of the Butler-Volmer equation with examples.
-> [Course PDF (Free)](https://ocw.mit.edu/courses/10-626-electrochemical-energy-systems-spring-2014/resources/mit10_626s14_s11lec13/)
-> [Lecture Notes Page](https://ocw.mit.edu/courses/10-626-electrochemical-energy-systems-spring-2014/pages/lecture-notes/)
+> *"Electrochemical Energy Systems"*
+> Prof. Martin Bazant - 38 lectures including kinetics and Butler-Volmer.
+> [Lecture Notes Page (Free)](https://ocw.mit.edu/courses/10-626-electrochemical-energy-systems-spring-2014/pages/lecture-notes/)
 
 > **Chemistry LibreTexts**
 > *"Electrochemistry - Tafel and Butler-Volmer Equations"*
@@ -44,35 +26,38 @@ This section gathers reference books and open-access technical resources.
 > Reference article with equations and historical context.
 > [Wikipedia (Free)](https://en.wikipedia.org/wiki/Butler–Volmer_equation)
 
-### Current Distribution
-> **COMSOL Blog**
-> *"Theory of Current Distribution"*
-> Detailed documentation on primary, secondary, and tertiary distributions.
-> [Blog Article (Free)](https://www.comsol.com/blogs/theory-current-distribution)
-> [Electrochemistry Module PDF Guide](https://doc.comsol.com/5.6/doc/com.comsol.help.echem/ElectrochemistryModuleUsersGuide.pdf)
+---
 
-> **COMSOL Documentation**
-> *"Primary and Secondary Current Distribution Interfaces"*
-> Complete technical reference.
-> [Documentation (Free)](https://doc.comsol.com/5.6/doc/com.comsol.help.battery/battery_ug_electrochem.07.003.html)
+## 2. Nickel Electrodeposition
 
-### Finite Element Simulation
+> **Zellele, D. M.; Yar-Mukhamedova, G. Sh.; Rutkowska-Gorczyca, M.**
+> *"A Review on Properties of Electrodeposited Nickel Composite Coatings"*
+> Materials, Vol. 17, Issue 23, Article 5715, **2024**.
+> Comprehensive review on nickel electrodeposition and composites.
+> [DOI: 10.3390/ma17235715 (Open Access)](https://doi.org/10.3390/ma17235715)
+
+> **Mahapatro, A.; Kumar Suggu, S.**
+> *"Modeling and simulation of electrodeposition: Effect of electrolyte current density and conductivity on electroplating thickness"*
+> Adv. Mater. Sci., **2018**.
+> FEM modeling of thickness distribution.
+> [PDF (Open Access)](https://www.oatext.com/pdf/AMS-3-143.pdf)
+
+---
+
+## 3. Simulation Tools
+
 > **EchemFEM - LLNL**
 > *"Finite Element Methods for Electrochemistry"*
 > Firedrake package for electrochemical simulation (code used in this project).
 > [Official Documentation](https://software.llnl.gov/echemfem/quickstart.html)
 > [GitHub Source Code](https://github.com/LLNL/echemfem)
-> [JOSS Paper](https://joss.theoj.org/papers/10.21105/joss.06531)
-
----
-
-## 3. Additional Resources
+> [DOI: 10.21105/joss.06531](https://joss.theoj.org/papers/10.21105/joss.06531)
 
 > **Firedrake Project**
 > Finite element framework used for this simulator.
 > [firedrakeproject.org](https://www.firedrakeproject.org/)
 
-> **PETSc Documentation**
+> **PETSc**
 > Numerical solvers (SNES Newton, KSP GMRES).
 > [petsc.org](https://petsc.org/release/overview/)
 

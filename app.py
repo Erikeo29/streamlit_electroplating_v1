@@ -49,7 +49,7 @@ Jan 2026 - *EQU*
         "btn_reset": "RÉINITIALISER",
         "combo_unavailable": "Combinaison non disponible",
         "png_viewer": "Comparaison des résultats (2D)",
-        "3d_viewer": "Comparaison 3D Interactive (épaisseur extrudée x1000) - Utiliser la souris pour zoomer et pivoter",
+        "3d_viewer": "Comparaison 3D Interactive (épaisseur extrudée x1000) - Utiliser la souris pour zoomer et faire pivoter la géométrie",
         "3d_desc": "",
         "3d_not_found": "Fichier de visualisation 3D introuvable.",
         # Parameter labels
@@ -106,7 +106,7 @@ Jan 2026 - *EQU*
         "btn_reset": "RESET",
         "combo_unavailable": "Combination not available",
         "png_viewer": "Results Comparison (2D)",
-        "3d_viewer": "Interactive 3D Comparison (thickness extruded x1000) - Use mouse to zoom and rotate",
+        "3d_viewer": "Interactive 3D Comparison (thickness extruded x1000) - Use mouse to zoom and rotate the geometry",
         "3d_desc": "",
         "3d_not_found": "3D visualization file not found.",
         # Parameter labels
@@ -506,7 +506,6 @@ elif selected_page == study_pages[0]:
     # --- TAB 1 : Résultats (2D) avec menus par paramètre ---
     with tabs[1]:
         st.subheader(t("png_viewer"))
-
         if not df_mapping.empty:
             # CSS pour boutons colorés
             st.markdown("""
