@@ -2,7 +2,8 @@
 
 **Sommaire :**
 1. Cinétique Butler-Volmer
-2. Outils de Simulation
+2. Électrodéposition du Nickel
+3. Outils de Simulation
 
 Cette section regroupe des ressources techniques en accès libre.
 
@@ -27,7 +28,36 @@ Cette section regroupe des ressources techniques en accès libre.
 
 ---
 
-## 2. Outils de Simulation
+## 2. Électrodéposition du Nickel
+
+> **Mahapatro, A.; Kumar Suggu, S.**
+> *"Modeling and simulation of electrodeposition: effect of electrolyte current density and conductivity on electroplating thickness"*
+> Adv. Mater. Sci., Vol. 3, **2018**.
+> Modélisation FEM de la distribution d'épaisseur avec distribution secondaire de courant.
+> [DOI: 10.15761/AMS.1000143 (Open Access)](https://doi.org/10.15761/AMS.1000143)
+> [PDF direct](https://www.oatext.com/pdf/AMS-3-143.pdf)
+
+> **Wahab, H. A.; Noordin, M. Y.; Izman, S.; Kurniawan, D.**
+> *"Quantitative Analysis of Electroplated Nickel Coating on Hard Metal"*
+> The Scientific World Journal, **2013**.
+> Étude de l'uniformité du dépôt en fonction des paramètres de procédé.
+> [DOI: 10.1155/2013/631936 (Open Access)](https://doi.org/10.1155/2013/631936)
+
+> **Lim, K.-H.; Lee, M.; Yim, T. H.; Seo, S.; Yi, K.-W.**
+> *"Development of a New Modeling Technique to Simulate 3-dimensional Electroplating System"*
+> J. Electrochem. Sci. Technol., Vol. 10(4), pp. 408-415, **2019**.
+> Simulation 3D avec distribution secondaire de courant et effets hydrodynamiques.
+> [DOI: 10.33961/jecst.2019.02894 (Open Access)](https://doi.org/10.33961/jecst.2019.02894)
+
+> **Djouani, R.; Qian, X.**
+> *"Mechanism of Electrodeposition of Nickel"*
+> Int. J. Current Research, **2018**.
+> Revue des mécanismes d'électrodéposition du nickel en solution aqueuse.
+> [PDF HAL Archive](https://hal.science/hal-03637891/document)
+
+---
+
+## 3. Outils de Simulation
 
 > **EchemFEM - LLNL**
 > *"Finite Element Methods for Electrochemistry"*
