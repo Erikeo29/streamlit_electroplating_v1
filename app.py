@@ -523,10 +523,10 @@ elif selected_page == study_pages[0]:
                 color: white !important;
                 border: none !important;
             }
-            /* Popover Simulations disponibles : fond rouge, texte noir */
+            /* Popover Simulations disponibles : fond rouge, texte blanc */
             button[data-testid="stPopoverButton"] {
                 background-color: #ff4b4b !important;
-                color: black !important;
+                color: white !important;
                 font-weight: bold !important;
                 border: none !important;
             }

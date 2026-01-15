@@ -10,7 +10,7 @@
 
 ## 1. Results Summary
 
-The secondary current distribution approach implemented with Firedrake enables robust estimation of Nickel deposit growth on complex geometries.
+The secondary current distribution approach implemented with Firedrake enables estimation and visualization of Nickel thickness distribution based on a few studied parameters (CD, σ, j₀, α).
 
 ### Main Results from the Parametric Study (81 simulations)
 
