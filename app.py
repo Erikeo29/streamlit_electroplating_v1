@@ -38,7 +38,7 @@ Jan 2026 - *EQU*
 - Plages σ, j₀, α élargies
 - Comparaison côte à côte améliorée""",
         # Tabs
-        "tabs_plating": ["Code", "Résultats (2D)", "Résultats 3D"],
+        "tabs_plating": ["Code", "Résultats (2D)", "Résultats (3D)", "Analyse"],
         # Cards
         "card_plating_title": "### Électrodéposition",
         "card_plating_text": "Simulation de dépôt électrolytique et distribution de courant secondaire.",
@@ -64,6 +64,9 @@ Jan 2026 - *EQU*
         "thickness_map": "Carte d'épaisseur",
         "current_density": "Densité de courant",
         "view_3d_iso": "Vue 3D isométrique",
+        # Analysis tab
+        "analysis_title": "Analyse paramétrique",
+        "analysis_desc": "Synthèse de l'impact des paramètres sur l'uniformité du dépôt (CV%) et l'épaisseur moyenne.",
         # Studies
         "title_study_1": "Étude 1 : Distribution de courant secondaire (Python + Firedrake)",
         "title_study_2": "Étude 2 : À venir",
@@ -96,7 +99,7 @@ Jan 2026 - *EQU*
 - Extended σ, j₀, α ranges
 - Improved side-by-side comparison""",
         # Tabs
-        "tabs_plating": ["Code", "Results (2D)", "Results 3D"],
+        "tabs_plating": ["Code", "Results (2D)", "Results (3D)", "Analysis"],
         # Cards
         "card_plating_title": "### Electroplating",
         "card_plating_text": "Simulation of electrolytic deposition and secondary current distribution.",
@@ -122,6 +125,9 @@ Jan 2026 - *EQU*
         "thickness_map": "Thickness Map",
         "current_density": "Current Density",
         "view_3d_iso": "3D Isometric View",
+        # Analysis tab
+        "analysis_title": "Parametric Analysis",
+        "analysis_desc": "Summary of parameter impact on deposit uniformity (CV%) and average thickness.",
         # Studies
         "title_study_1": "Study 1: Secondary Current Distribution (Python + Firedrake)",
         "title_study_2": "Study 2: Coming Soon",
@@ -701,6 +707,17 @@ elif selected_page == study_pages[0]:
                         st.warning(t("combo_unavailable"))
         else:
             st.info(t("placeholder_coming_soon"))
+
+    # --- TAB 3 : Analyse paramétrique ---
+    with tabs[3]:
+        st.subheader(t("analysis_title"))
+        st.markdown(t("analysis_desc"))
+
+        analysis_img_path = os.path.join(ASSETS_PATH, "plating", "analyse_parametrique_summary.png")
+        if os.path.exists(analysis_img_path):
+            st.image(analysis_img_path, use_container_width=True)
+        else:
+            st.warning("Image d'analyse non disponible / Analysis image not available")
 
 # ===== ÉTUDE 2 : À venir (index 1 dans study_pages) =====
 elif selected_page == study_pages[1]:
