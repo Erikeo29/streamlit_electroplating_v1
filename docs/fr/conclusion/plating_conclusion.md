@@ -10,7 +10,7 @@
 
 ## 1. Synthèse des résultats
 
-L'approche de distribution de courant secondaire implémentée avec Firedrake permet une estimation robuste de la croissance du dépôt de Nickel sur des géométries complexes.
+L'approche de distribution de courant secondaire implémentée avec Firedrake permet une estimation et visualisation de la répartition des épaisseurs de Nickel en fonction de quelques paramètres étudiés (DDC, σ, j₀, α).
 
 ### Principaux résultats de l'étude paramétrique (81 simulations)
 

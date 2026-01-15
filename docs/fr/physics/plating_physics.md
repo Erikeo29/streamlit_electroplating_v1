@@ -77,6 +77,19 @@ $$\text{faraday\_factor} = \frac{M \cdot t_{dep} \cdot \varepsilon}{n \cdot F \c
 - **Histogramme** : Analyse statistique de la répartition du métal
 - **Vue 3D interactive** : Export HTML via PyVista
 
+### Coefficient de Variation (CV%)
+
+Le CV% mesure l'uniformité du dépôt :
+$$CV = \frac{\sigma_h}{\bar{h}} \times 100\%$$
+
+Où $\sigma_h$ est l'écart-type et $\bar{h}$ l'épaisseur moyenne.
+
+| CV% | Interprétation |
+|-----|----------------|
+| < 10% | Bon |
+| 10 - 20% | Acceptable |
+| > 20% | À améliorer |
+
 ---
 
 ## 5. Algorithme Galvanostatique (Recherche de DDC)
