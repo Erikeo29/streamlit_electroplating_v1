@@ -15,7 +15,9 @@ In the electrolyte, charge conservation follows Ohm's law with constant conducti
 
 $$ \nabla \cdot (-\sigma \nabla \phi) = 0 $$
 
-Where $\phi$ is the electric potential in the electrolyte [V].
+Where:
+- $\sigma$ = electrolyte conductivity [S/m]
+- $\phi$ = electric potential in the electrolyte [V]
 
 ---
 
@@ -26,8 +28,14 @@ Local current density $j$ at the cathode surface is governed by the Butler-Volme
 $$ j = j_0 \left[ \exp\left(\frac{\alpha_a n F}{RT} \eta\right) - \exp\left(-\frac{\alpha_c n F}{RT} \eta\right) \right] $$
 
 Where:
-- $j_0$ is the exchange current density [A/m²].
-- $\eta = \phi - E_{eq}$ is the activation overpotential.
+- $j$ = local current density [A/m²]
+- $j_0$ = exchange current density [A/m²]
+- $\alpha_a$, $\alpha_c$ = anodic and cathodic transfer coefficients
+- $n$ = number of electrons transferred
+- $F$ = Faraday constant (96485 C/mol)
+- $R$ = universal gas constant (8.314 J/(mol·K))
+- $T$ = temperature [K]
+- $\eta = \phi - E_{eq}$ = activation overpotential [V]
 
 ---
 

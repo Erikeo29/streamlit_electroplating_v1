@@ -1,4 +1,4 @@
-# Bibliographie
+# Références bibliographiques
 
 **Sommaire :**
 1. Cinétique Butler-Volmer

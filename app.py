@@ -27,7 +27,7 @@ TRANSLATIONS = {
         "study_header": "Études de modélisation",
         "study_pages": ["Étude 1 (Python + Firedrake)", "Étude 2 (À venir)"],
         "annex_header": "Annexes",
-        "annex_pages": ["Conclusion et Perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Bibliographie"],
+        "annex_pages": ["Conclusion et Perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Références bibliographiques"],
         # Version info (NE PAS MODIFIER)
         "version_info": """**Version 1.4.0**
 Jan 2026 - *EQU*
@@ -88,7 +88,7 @@ Jan 2026 - *EQU*
         "study_header": "Modeling Studies",
         "study_pages": ["Study 1 (Python + Firedrake)", "Study 2 (Coming Soon)"],
         "annex_header": "Appendices",
-        "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliography"],
+        "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliographical References"],
         # Version info (DO NOT MODIFY)
         "version_info": """**Version 1.4.0**
 Jan 2026 - *EQU*

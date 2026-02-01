@@ -15,7 +15,9 @@ Dans l'électrolyte, la conservation de la charge suit la loi d'Ohm avec une con
 
 $$ \nabla \cdot (-\sigma \nabla \phi) = 0 $$
 
-Où $\phi$ est le potentiel électrique dans l'électrolyte [V].
+Où :
+- $\sigma$ = conductivité de l'électrolyte [S/m]
+- $\phi$ = potentiel électrique dans l'électrolyte [V]
 
 ---
 
@@ -26,8 +28,14 @@ La densité de courant locale $j$ à la surface de la cathode est régie par l'�
 $$ j = j_0 \left[ \exp\left(\frac{\alpha_a n F}{RT} \eta\right) - \exp\left(-\frac{\alpha_c n F}{RT} \eta\right) \right] $$
 
 Où :
-- $j_0$ est la densité de courant d'échange [A/m²].
-- $\eta = \phi - E_{eq}$ est la surtension d'activation.
+- $j$ = densité de courant locale [A/m²]
+- $j_0$ = densité de courant d'échange [A/m²]
+- $\alpha_a$, $\alpha_c$ = coefficients de transfert anodique et cathodique
+- $n$ = nombre d'électrons échangés
+- $F$ = constante de Faraday (96485 C/mol)
+- $R$ = constante des gaz parfaits (8.314 J/(mol·K))
+- $T$ = température [K]
+- $\eta = \phi - E_{eq}$ = surtension d'activation [V]
 
 ---
 

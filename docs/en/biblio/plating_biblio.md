@@ -1,4 +1,4 @@
-# Bibliography
+# Bibliographical References
 
 **Table of Contents:**
 1. Butler-Volmer Kinetics
