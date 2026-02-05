@@ -9,14 +9,14 @@ This work is released as open-source: it may be freely copied, duplicated, and a
 ---
 
 **Contents:**
-1. Platform Objective
+1. Application Objective
 2. Electroplating
 3. Navigation
 4. Methodological Note
 
 ---
 
-## 1. Platform Objective
+## 1. Application Objective
 
 This interactive application gathers Python-based numerical solving tools for the study of electroplating.
 
@@ -51,6 +51,6 @@ The application is structured around several tools:
 
 ## 4. Methodological Note
 
-The results presented come from **pre-computed** simulations. The project was carried out on a standard laptop: Linux environment via WSL2, 1.5-3.5 GHz processor, 6 CPU / 12 threads, 32 GB RAM. The 2D FEM simulations were performed with various parameter combinations (CD, conductivity, exchange current density, transfer coefficients) as a parametric study.
+The results presented come from **pre-computed** simulations. The project was carried out on a standard laptop: Linux environment via WSL2, 1.5-3.5 GHz processor, 6 CPU / 12 threads, 32 GB RAM. Computation times range from 5 to 15 minutes for a 2D FEM simulation.
 
 This application is therefore a **results viewer**, not a real-time simulator. Indeed, running these simulations requires specific environment configurations and Python packages (Firedrake). The codes are available in the "Code" tab so they can be copied and used to reproduce these simulations on other machines.

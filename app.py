@@ -6,7 +6,7 @@ import pandas as pd
 from groq import Groq
 
 # --- Configuration de la page ---
-st.set_page_config(page_title="Electroplating Simulation Platform", layout="wide")
+st.set_page_config(page_title="Electroplating Simulation Application", layout="wide")
 
 # --- Chemins ---
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -19,7 +19,7 @@ STUDY_RESULTS_PATH = os.path.join(ASSETS_PATH, "plating/study_results")
 # --- Traductions ---
 TRANSLATIONS = {
     "fr": {
-        "title": "Plateforme de Simulation d'Électrodéposition",
+        "title": "Application de Simulation d'Électrodéposition",
         "sidebar_title": "Simulation d'électrodéposition",
         # Navigation groups
         "gen_header": "Général",
@@ -80,7 +80,7 @@ Jan 2026 - *EQU*
         "chat_api_missing": "⚠️ Clé API manquante. Configurez GROQ_API_KEY.",
     },
     "en": {
-        "title": "Electroplating Simulation Platform",
+        "title": "Electroplating Simulation Application",
         "sidebar_title": "Electroplating Simulation",
         # Navigation groups
         "gen_header": "General",

@@ -12,14 +12,14 @@
 
 The secondary current distribution approach implemented with Firedrake enables estimation and visualization of Nickel thickness distribution based on a few studied parameters (CD, σ, j₀, α).
 
-### Main Results from the Parametric Study (81 simulations)
+### Main Results from the Parametric Study (243 simulations)
 
 | Parameter | Range Studied | Impact on CV% |
 |-----------|---------------|---------------|
-| CD (A/dm²) | 4 - 12 | **Strong impact** |
-| σ (S/m) | 10 - 40 | **Strong impact**: CV ↓ when σ ↑ |
-| j₀ (A/m²) | 0.34 - 1.36 | Moderate impact: CV ↓ when j₀ ↑ |
-| α | 0.4 - 0.6 | Low impact |
+| CD (A/dm²) | 5 - 15 | **Strong impact** |
+| σ (S/m) | 10 - 50 | **Strong impact**: CV ↓ when σ ↑ |
+| j₀ (A/m²) | 0.30 - 1.10 | Moderate impact: CV ↓ when j₀ ↑ |
+| α | 0.25 - 0.75 | Low impact |
 
 ---
 
@@ -29,7 +29,7 @@ The secondary current distribution approach implemented with Firedrake enables e
 
 - **Butler-Volmer / Faraday coupling**: Butler-Volmer kinetics coupled with Faraday's law provides physically realistic thickness maps.
 
-- **Statistical analysis**: Histograms and coefficient of variation (CV%) are valuable decision-support tools for quality control.
+- **Statistical analysis**: Histograms and coefficient of variation (CV%) are useful decision-support tools for quality control.
 
 - **Interactive 3D visualization**: PyVista HTML export enables detailed inspection of deposit topology.
 
@@ -54,10 +54,6 @@ The secondary current distribution approach implemented with Firedrake enables e
 ### Numerical and Meshing
 - **Mesh sensitivity analysis**: Convergence study to optimize the accuracy/computation time trade-off.
 - **Real 3D geometries**: Extension to complex industrial parts (connectors, PCBs).
-
-### Time Evolution
-- **Dynamic tracking**: Tracking deposit growth over time.
-- **Experimental validation**: Comparison with profilometric measurements.
 
 ### Optimization
 - **Inverse optimization**: Automatic search for optimal parameters for a target uniformity.

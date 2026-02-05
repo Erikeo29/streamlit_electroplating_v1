@@ -12,14 +12,14 @@
 
 L'approche de distribution de courant secondaire implémentée avec Firedrake permet une estimation et visualisation de la répartition des épaisseurs de Nickel en fonction de quelques paramètres étudiés (DDC, σ, j₀, α).
 
-### Principaux résultats de l'étude paramétrique (81 simulations)
+### Principaux résultats de l'étude paramétrique (243 simulations)
 
 | Paramètre | Plage étudiée | Impact sur CV% |
 |-----------|---------------|----------------|
-| DDC (A/dm²) | 4 - 12 | **Fort impact** |
-| σ (S/m) | 10 - 40 | **Fort impact** : CV ↓ quand σ ↑ |
-| j₀ (A/m²) | 0.34 - 1.36 | Impact modéré : CV ↓ quand j₀ ↑ |
-| α | 0.4 - 0.6 | Impact faible |
+| DDC (A/dm²) | 5 - 15 | **Fort impact** |
+| σ (S/m) | 10 - 50 | **Fort impact** : CV ↓ quand σ ↑ |
+| j₀ (A/m²) | 0.30 - 1.10 | Impact modéré : CV ↓ quand j₀ ↑ |
+| α | 0.25 - 0.75 | Impact faible |
 
 ---
 
@@ -29,7 +29,7 @@ L'approche de distribution de courant secondaire implémentée avec Firedrake pe
 
 - **Couplage Butler-Volmer / Faraday** : La cinétique de Butler-Volmer couplée à la loi de Faraday fournit des cartes d'épaisseur physiquement réalistes.
 
-- **Analyse statistique** : Les histogrammes et le coefficient de variation (CV%) sont des outils d'aide à la décision précieux pour le contrôle qualité.
+- **Analyse statistique** : Les histogrammes et le coefficient de variation (CV%) sont des outils d'aide à la décision utiles pour le contrôle qualité.
 
 - **Visualisation 3D interactive** : L'export PyVista HTML permet une inspection détaillée de la topologie du dépôt.
 
@@ -54,10 +54,6 @@ L'approche de distribution de courant secondaire implémentée avec Firedrake pe
 ### Numérique et maillage
 - **Analyse de sensibilité au maillage** : Étude de convergence pour optimiser le compromis précision/temps de calcul.
 - **Géométries 3D réelles** : Extension à des pièces industrielles complexes (connecteurs, PCB).
-
-### Évolution temporelle
-- **Suivi dynamique** : Suivi de la croissance du dépôt au cours du temps.
-- **Validation expérimentale** : Comparaison avec des mesures profilométriques.
 
 ### Optimisation
 - **Optimisation inverse** : Recherche automatique des paramètres optimaux pour une uniformité cible.
