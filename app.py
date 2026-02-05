@@ -29,14 +29,12 @@ TRANSLATIONS = {
         "annex_header": "Annexes",
         "annex_pages": ["Conclusion et Perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Références bibliographiques"],
         # Version info (NE PAS MODIFIER)
-        "version_info": """**Version 1.4.0**
-Jan 2026 - *EQU*
+        "version_info": """**Version 1.0.1**
+Dec 2025 - *EQU*
 
 **Nouveautés :**
-- Étude DDC 5-10-15 A/dm² (243 sims)
-- Nouveau paramètre : temps de dépôt
-- Plages σ, j₀, α élargies
-- Comparaison côte à côte améliorée""",
+- Documentation code enrichie (imports, détails)
+- Support bilingue FR/EN""",
         # Tabs
         "tabs_plating": ["Code", "Résultats (2D)", "Résultats (3D)", "Analyse"],
         # Cards
@@ -90,14 +88,12 @@ Jan 2026 - *EQU*
         "annex_header": "Appendices",
         "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliographical References"],
         # Version info (DO NOT MODIFY)
-        "version_info": """**Version 1.4.0**
-Jan 2026 - *EQU*
+        "version_info": """**Version 1.0.1**
+Dec 2025 - *EQU*
 
-**What's New:**
-- DDC study 5-10-15 A/dm² (243 sims)
-- New parameter: deposition time
-- Extended σ, j₀, α ranges
-- Improved side-by-side comparison""",
+**New Features:**
+- Enriched code documentation
+- Bilingual support FR/EN""",
         # Tabs
         "tabs_plating": ["Code", "Results (2D)", "Results (3D)", "Analysis"],
         # Cards
@@ -723,12 +719,19 @@ elif selected_page == study_pages[0]:
 elif selected_page == study_pages[1]:
     st.title(t("title_study_2"))
     st.info(t("placeholder_coming_soon"))
-    st.markdown("""
-**Étude prévue / Planned study:**
-- Analyse de sensibilité au maillage
-- Étude de convergence temporelle
-- Mesh sensitivity analysis
-- Time convergence study
+    if get_language() == "fr":
+        st.markdown("""
+**Étude prévue :**
+- Impact de la largeur et de la longueur des pistes sur la répartition des épaisseurs sur les plots circulaires
+- Géométrie 3D
+- Distribution de courant tertiaire
+""")
+    else:
+        st.markdown("""
+**Planned study:**
+- Impact of track width and length on thickness distribution on circular pads
+- 3D geometry
+- Tertiary current distribution
 """)
 
 # ===== PAGES ANNEXES =====
