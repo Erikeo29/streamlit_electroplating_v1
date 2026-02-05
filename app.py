@@ -25,11 +25,11 @@ TRANSLATIONS = {
         "gen_header": "Général",
         "gen_pages": ["Accueil", "Introduction", "Physique"],
         "study_header": "Études de modélisation",
-        "study_pages": ["Étude 1 : étude d'un circuit 2D", "Étude 2 (À venir)"],
+        "study_pages": ["Étude 1 : circuit 2D", "Étude 2 (À venir)"],
         "annex_header": "Annexes",
         "annex_pages": ["Conclusion et Perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Références bibliographiques"],
         # Version info (NE PAS MODIFIER)
-        "version_info": """**Version 1.0.1**
+        "version_info": """**Version 1.5.2**
 Dec 2025 - *EQU*
 
 **Nouveautés :**
@@ -66,7 +66,7 @@ Dec 2025 - *EQU*
         "analysis_title": "Analyse paramétrique",
         "analysis_desc": "Synthèse de l'impact des paramètres sur l'uniformité du dépôt (CV%) et l'épaisseur moyenne.",
         # Studies
-        "title_study_1": "Étude 1 : étude d'un circuit 2D",
+        "title_study_1": "Étude 1 : circuit 2D",
         "title_study_2": "Étude 2 : À venir",
         "placeholder_coming_soon": "Étude à venir - Contenu en cours de préparation",
         # Chatbot
@@ -84,11 +84,11 @@ Dec 2025 - *EQU*
         "gen_header": "General",
         "gen_pages": ["Home", "Introduction", "Physics"],
         "study_header": "Modeling Studies",
-        "study_pages": ["Study 1: 2D Circuit Study", "Study 2 (Coming Soon)"],
+        "study_pages": ["Study 1: 2D Circuit", "Study 2 (Coming Soon)"],
         "annex_header": "Appendices",
         "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliographical References"],
         # Version info (DO NOT MODIFY)
-        "version_info": """**Version 1.0.1**
+        "version_info": """**Version 1.5.2**
 Dec 2025 - *EQU*
 
 **New Features:**
@@ -125,7 +125,7 @@ Dec 2025 - *EQU*
         "analysis_title": "Parametric Analysis",
         "analysis_desc": "Summary of parameter impact on deposit uniformity (CV%) and average thickness.",
         # Studies
-        "title_study_1": "Study 1: 2D Circuit Study",
+        "title_study_1": "Study 1: 2D Circuit",
         "title_study_2": "Study 2: Coming Soon",
         "placeholder_coming_soon": "Coming Soon - Content under preparation",
         # Chatbot
