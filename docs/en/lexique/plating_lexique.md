@@ -22,7 +22,7 @@
 | **PDE** | Partial Differential Equation | Governing equations |
 | **DOF** | Degrees of Freedom | Number of independent variables |
 | **SI** | International System | Standard unit system |
-| **CV** | Coefficient of Variation | Relative dispersion measure |
+| **CV%** | Coefficient of Variation | Relative dispersion measure |
 
 ---
 

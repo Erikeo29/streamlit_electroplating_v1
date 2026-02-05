@@ -22,7 +22,7 @@
 | **PDE** | Partial Differential Equation | Équation aux dérivées partielles |
 | **DOF** | Degrees of Freedom | Degrés de liberté |
 | **SI** | Système International | Système d'unités international |
-| **CV** | Coefficient of Variation | Mesure de dispersion relative |
+| **CV%** | Coefficient of Variation | Mesure de dispersion relative |
 
 ---
 

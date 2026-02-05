@@ -35,5 +35,5 @@ Contrairement à la distribution primaire qui ne considère que la résistance d
 La simulation permet de calculer à l'avance l'épaisseur du dépôt en chaque point de la pièce, permettant ainsi d'**optimiser** :
 - Le **design des pièces** et des cellules de traitement
 - Les **conditions opératoires** (DDC, temps de dépôt)
-- La **consommation de matière première** (métal, produits chimiques)
 - La **qualité du revêtement** (uniformité, propriétés mécaniques)
+- La **consommation de matière première** (métal, produits chimiques)

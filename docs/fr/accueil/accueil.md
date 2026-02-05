@@ -9,14 +9,14 @@ Ce travail est mis à disposition en open-source : il peut être librement copi�
 ---
 
 **Sommaire :**
-1. Objectif de la plateforme
+1. Objectif de l'application
 2. Électrodéposition (Plating)
 3. Navigation
 4. Note méthodologique
 
 ---
 
-## 1. Objectif de la plateforme
+## 1. Objectif de l'application
 
 Cette application interactive regroupe des outils de résolution numériques basés sur Python pour l'étude de l'électrodéposition.
 
@@ -51,6 +51,6 @@ L'application est structurée autour de plusieurs outils :
 
 ## 4. Note méthodologique
 
-Les résultats présentés proviennent de simulations **pré-calculées**. Le projet a été réalisé sur un PC portable standard : environnement Linux via WSL2, processeur 1.5-3.5 GHz, 6 CPU / 12 threads, 32 Go de RAM. Les simulations FEM 2D ont été réalisées avec différentes combinaisons de paramètres (DDC, conductivité, densité de courant d'échange, coefficients de transfert) sous forme d'étude paramétrique.
+Les résultats présentés proviennent de simulations **pré-calculées**. Le projet a été réalisé sur un PC portable standard : environnement Linux via WSL2, processeur 1.5-3.5 GHz, 6 CPU / 12 threads, 32 Go de RAM. Les temps de calcul varient de 5 à 15 minutes pour une simulation 2D (FEM).
 
 Cette application est donc un **visualiseur de résultats**, non un simulateur en temps réel. En effet, la réalisation de ces simulations nécessite des configurations spécifiques d'environnements et de packages Python (Firedrake). Les codes sont disponibles dans l'onglet "Code" afin de permettre leur reproduction sur d'autres machines.
